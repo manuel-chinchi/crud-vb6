@@ -1,14 +1,18 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmListCategories 
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "ListCategories"
    ClientHeight    =   4356
-   ClientLeft      =   108
-   ClientTop       =   432
+   ClientLeft      =   36
+   ClientTop       =   360
    ClientWidth     =   8184
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
    ScaleHeight     =   4356
    ScaleWidth      =   8184
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin MSComctlLib.ListView lvwCategories 
       Height          =   3612

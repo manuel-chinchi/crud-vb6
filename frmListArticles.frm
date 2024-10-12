@@ -1,14 +1,18 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmListArticles 
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "ListArticles"
    ClientHeight    =   5772
-   ClientLeft      =   108
-   ClientTop       =   432
+   ClientLeft      =   36
+   ClientTop       =   360
    ClientWidth     =   9408
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
    ScaleHeight     =   5772
    ScaleWidth      =   9408
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Text1 
       BeginProperty Font 
