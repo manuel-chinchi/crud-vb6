@@ -55,13 +55,25 @@ Begin VB.Form frmListArticles
       Width           =   7092
       _ExtentX        =   12510
       _ExtentY        =   8911
+      View            =   3
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
+      FullRowSelect   =   -1  'True
+      GridLines       =   -1  'True
       _Version        =   393217
       ForeColor       =   -2147483640
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       NumItems        =   0
    End
    Begin VB.CommandButton cmdShowAll 
@@ -138,3 +150,59 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
+Dim Articles As Collection
+Dim i As Integer
+
+Private Sub Form_Load()
+    Set Articles = New Collection
+    
+    Articles.Add modArticleHelper.NewArticle(1, "buzo", "5xU", "indumentaria")
+    Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
+    Articles.Add modArticleHelper.NewArticle(3, "jean", "40xU", "indumentaria")
+    Articles.Add modArticleHelper.NewArticle(4, "medias", "400xU", "calzado")
+    
+    SetHeader "Id", "Name", "Details", "Category"
+    SetHeaderWidth 900, 1500, 1800, 1200
+    SetDataSource Articles
+End Sub
+
+Private Sub SetHeader(ParamArray varParam() As Variant)
+    With lvwArticles
+        With .ColumnHeaders
+            .Clear
+            
+            For i = 0 To UBound(varParam)
+                .Add , , varParam(i), 1000
+            Next
+            
+        End With
+    End With
+End Sub
+
+Private Sub SetHeaderWidth(ParamArray varParam() As Variant)
+    With lvwArticles
+        With .ColumnHeaders
+            
+            For i = 0 To UBound(varParam)
+                .Item(i + 1).Width = varParam(i)
+            Next
+            
+        End With
+    End With
+End Sub
+
+Private Sub SetDataSource(arr As Collection)
+    Dim li As ListItem
+    Dim objArticle As clsArticle
+
+    lvwArticles.ListItems.Clear
+    
+    For Each objArticle In arr
+        Set li = lvwArticles.ListItems.Add(, , objArticle.mId)
+        li.SubItems(1) = objArticle.mName
+        li.SubItems(2) = objArticle.mDetails
+        li.SubItems(3) = objArticle.mCategoryName
+    Next
+End Sub
