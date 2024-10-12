@@ -88,3 +88,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub cmdArticles_Click()
+    frmListArticles.Show vbModal
+End Sub
