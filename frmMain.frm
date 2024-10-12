@@ -91,3 +91,7 @@ Attribute VB_Exposed = False
 Private Sub cmdArticles_Click()
     frmListArticles.Show vbModal
 End Sub
+
+Private Sub cmdCategories_Click()
+    frmListCategories.Show vbModal
+End Sub
