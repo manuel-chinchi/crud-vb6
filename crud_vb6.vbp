@@ -1,10 +1,10 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Form=frmMain.frm
-Startup="Form1"
+Startup="frmMain"
 HelpFile=""
 Command32=""
-Name="Project1"
+Name="prj_crud_vb6"
 HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
