@@ -106,7 +106,7 @@ End Sub
 
 Private Sub cmdDelete_Click()
     Dim arrIdsCategoriesSelected As Collection
-    Set arrIdsCategoriesSelected = GetIdsOfCategoriesSelected
+    Set arrIdsCategoriesSelected = GetIdsOfSelectedCategories
     Dim iId As Variant
     
     If arrIdsCategoriesSelected.Count <> 0 Then
@@ -158,7 +158,7 @@ Private Sub SetDataSource(arr As Collection)
     Next
 End Sub
 
-Private Function GetIdsOfCategoriesSelected() As Collection
+Private Function GetIdsOfSelectedCategories() As Collection
     Dim arrIdsCategories As Collection
     Set arrIdsCategories = New Collection
     Dim li As ListItem
@@ -169,5 +169,5 @@ Private Function GetIdsOfCategoriesSelected() As Collection
         End If
     Next
     
-    Set GetIdsOfCategoriesSelected = arrIdsCategories
+    Set GetIdsOfSelectedCategories = arrIdsCategories
 End Function

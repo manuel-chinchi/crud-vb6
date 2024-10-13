@@ -58,6 +58,7 @@ Begin VB.Form frmListArticles
       View            =   3
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
+      Checkboxes      =   -1  'True
       FullRowSelect   =   -1  'True
       GridLines       =   -1  'True
       _Version        =   393217
@@ -156,8 +157,8 @@ Dim i As Integer
 Public ArticleRepository As clsArticleRepository
 
 Private Sub Form_Load()
-    SetHeader "Id", "Name", "Details", "Category"
-    SetHeaderWidth 900, 1500, 1800, 1200
+    SetHeader " ", "Id", "Name", "Details", "Category"
+    SetHeaderWidth 300, 900, 1500, 1800, 1200
     SetDataSource ArticleRepository.GetArticles()
 End Sub
 
@@ -193,10 +194,15 @@ Private Sub cmdEdit_Click()
 End Sub
 
 Private Sub cmdDelete_Click()
-    Dim iIdArticle As Integer
-    If Not lvwArticles.SelectedItem Is Nothing Then
-        iIdArticle = Int(lvwArticles.SelectedItem.Text)
-        ArticleRepository.DeleteArticle (iIdArticle)
+    Dim arrIdsSelectedArticles As Collection
+    Set arrIdsSelectedArticles = GetIdsOfSelectedArticles
+    
+    If arrIdsSelectedArticles.Count <> 0 Then
+        Dim iId As Variant
+        For Each iId In arrIdsSelectedArticles
+            ArticleRepository.DeleteArticle (Int(iId))
+        Next
+        
         SetDataSource ArticleRepository.GetArticles()
     End If
 End Sub
@@ -250,9 +256,24 @@ Private Sub SetDataSource(arr As Collection)
     lvwArticles.ListItems.Clear
     
     For Each objArticle In arr
-        Set li = lvwArticles.ListItems.Add(, , objArticle.mId)
-        li.SubItems(1) = objArticle.mName
-        li.SubItems(2) = objArticle.mDetails
-        li.SubItems(3) = objArticle.mCategoryName
+        Set li = lvwArticles.ListItems.Add(, , "")
+        li.SubItems(1) = objArticle.mId
+        li.SubItems(2) = objArticle.mName
+        li.SubItems(3) = objArticle.mDetails
+        li.SubItems(4) = objArticle.mCategoryName
     Next
 End Sub
+
+Private Function GetIdsOfSelectedArticles() As Collection
+    Dim arrIdsArticles As Collection
+    Set arrIdsArticles = New Collection
+    Dim li As ListItem
+    
+    For Each li In lvwArticles.ListItems
+        If li.Checked Then
+            arrIdsArticles.Add li.SubItems(1)
+        End If
+    Next
+    
+    Set GetIdsOfSelectedArticles = arrIdsArticles
+End Function
