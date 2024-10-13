@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsArticle"
+Attribute VB_Name = "clsCategory"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -14,9 +14,8 @@ Attribute VB_Exposed = False
 
 Public mId As Integer
 Public mName As String
-Public mDetails As String
-Public mCategoryName As String
+Public mArticlesRelated As Collection
 
 Public Property Get ToString() As String
-    ToString = Me.mId & "," & Me.mName & "," & Me.mDetails & "," & Me.mCategoryName
+    ToString = mId & "," & mName & "," & mArticlesRelated
 End Property

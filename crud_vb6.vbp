@@ -8,6 +8,7 @@ Form=Forms\frmEditArticle.frm
 Form=Forms\frmCreateArticle.frm
 Module=modArticleHelper; Modules\modArticleHelper.bas
 Class=clsArticle; Classes\clsArticle.cls
+Class=clsCategory; Classes\clsCategory.cls
 Startup="frmMain"
 HelpFile=""
 Command32=""
