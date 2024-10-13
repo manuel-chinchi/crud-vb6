@@ -168,6 +168,12 @@ Private Sub Form_Load()
     SetDataSource Articles
 End Sub
 
+Private Sub cmdAdd_Click()
+    frmCreateArticle.Show vbModal
+    Articles.Add frmCreateArticle.Article
+    SetDataSource Articles
+End Sub
+
 Private Sub SetHeader(ParamArray varParam() As Variant)
     With lvwArticles
         With .ColumnHeaders
