@@ -7,6 +7,7 @@ Form=frmListCategories.frm
 Class=clsArticle; clsArticle.cls
 Module=modArticleHelper; modArticleHelper.bas
 Form=frmCreateArticle.frm
+Form=frmEditArticle.frm
 Startup="frmMain"
 HelpFile=""
 Command32=""

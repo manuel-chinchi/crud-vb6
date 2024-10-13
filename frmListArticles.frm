@@ -174,6 +174,39 @@ Private Sub cmdAdd_Click()
     SetDataSource Articles
 End Sub
 
+Private Sub cmdEdit_Click()
+    Dim oArticle As clsArticle
+    Set oArticle = New clsArticle
+    Dim li As ListItem
+    Set li = lvwArticles.SelectedItem
+        
+    With oArticle
+        .mId = li.Text
+        .mName = li.SubItems(1)
+        .mDetails = li.SubItems(2)
+        .mCategoryName = li.SubItems(3)
+    End With
+    
+    Set frmEditArticle.Article = oArticle
+    frmEditArticle.Show vbModal
+    
+    If frmEditArticle.DialogResult = vbOK Then
+        Dim oCurrentArticle As clsArticle
+        For Each oCurrentArticle In Articles
+            If oCurrentArticle.mId = frmEditArticle.Article.mId Then
+                With oCurrentArticle
+                    .mName = frmEditArticle.Article.mName
+                    .mDetails = frmEditArticle.Article.mDetails
+                    .mCategoryName = frmEditArticle.Article.mCategoryName
+                End With
+                Exit For
+            End If
+        Next
+    End If
+    
+    SetDataSource Articles
+End Sub
+
 Private Sub SetHeader(ParamArray varParam() As Variant)
     With lvwArticles
         With .ColumnHeaders
