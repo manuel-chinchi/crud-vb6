@@ -85,12 +85,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Categories As Collection
 Dim i As Integer
 Dim CategoryRepository As clsCategoryRepository
 
 Private Sub Form_Load()
-    Set Categories = New Collection
     Set CategoryRepository = New clsCategoryRepository
     
     SetHeader "Id", "Name", "Articles"
