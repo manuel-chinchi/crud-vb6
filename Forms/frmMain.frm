@@ -100,6 +100,23 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub InitializeRepositories()
+    ' ~~~~~~~~~~~ static data ~~~~~~~~~~~
+    Dim ArticleRepository As clsArticleRepository
+    Dim CategoryRepository As clsCategoryRepository
+    
+    Set ArticleRepository = modSingletonRepository.GetArticleRepository()
+    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
+    
+    ArticleRepository.CreateArticle modArticleHelper.NewArticle(1, "Buzo", "5xU", "Otro")
+    ArticleRepository.CreateArticle modArticleHelper.NewArticle(2, "Jean", "15xU", "Otro")
+    ArticleRepository.CreateArticle modArticleHelper.NewArticle(3, "Gorra", "25xU", "Otro")
+    
+    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(1, "Remeras", Nothing)
+    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(2, "Pantalones", Nothing)
+    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(3, "Zapatillas", Nothing)
+    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(4, "Otro", Nothing)
+    ' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
     Set frmCreateArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
     Set frmListArticles.ArticleRepository = modSingletonRepository.GetArticleRepository()
     Set frmListCategories.CategoryRepository = modSingletonRepository.GetCategoryRepository()

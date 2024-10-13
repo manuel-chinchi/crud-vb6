@@ -17,12 +17,6 @@ Dim Articles As Collection
 
 Private Sub Class_Initialize() 'ctor
     Set Articles = New Collection
-    
-    Articles.Add modArticleHelper.NewArticle(1, "buzo", "5xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(300, "jean", "40xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(4, "medias", "400xU", "calzado")
-    
 End Sub
 
 Private Sub Class_Terminate()

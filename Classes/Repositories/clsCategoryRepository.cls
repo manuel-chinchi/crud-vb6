@@ -17,23 +17,6 @@ Dim Categories As Collection
 
 Private Sub Class_Initialize()
     Set Categories = New Collection
-    
-    Dim Articles As Collection
-    Set Articles = New Collection
-    
-    Articles.Add modArticleHelper.NewArticle(1, "buzo", "5xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(300, "jean", "40xU", "indumentaria")
-    
-    Categories.Add modCategoryHelper.NewCategory(1, "Remeras", Articles)
-    Categories.Add modCategoryHelper.NewCategory(2, "Zapatillas", Nothing)
-    Categories.Add modCategoryHelper.NewCategory(3, "Jeans", Nothing)
-    
-    Set Articles = New Collection
-    Articles.Add modArticleHelper.NewArticle(4, "Medias", "400xU", "calzado")
-    
-    Categories.Add modCategoryHelper.NewCategory(4, "Unisex", Articles)
-    Categories.Add modCategoryHelper.NewCategory(500, "Otro", Nothing)
 End Sub
 
 Private Sub Class_Terminate()
