@@ -160,7 +160,7 @@ Private Sub Form_Load()
     
     Articles.Add modArticleHelper.NewArticle(1, "buzo", "5xU", "indumentaria")
     Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(3, "jean", "40xU", "indumentaria")
+    Articles.Add modArticleHelper.NewArticle(300, "jean", "40xU", "indumentaria")
     Articles.Add modArticleHelper.NewArticle(4, "medias", "400xU", "calzado")
     
     SetHeader "Id", "Name", "Details", "Category"
@@ -205,6 +205,13 @@ Private Sub cmdEdit_Click()
     End If
     
     SetDataSource Articles
+End Sub
+
+Private Sub cmdDelete_Click()
+    If Not lvwArticles.SelectedItem Is Nothing Then
+        Articles.Remove Int(lvwArticles.SelectedItem.Index)
+        SetDataSource Articles
+    End If
 End Sub
 
 Private Sub SetHeader(ParamArray varParam() As Variant)
