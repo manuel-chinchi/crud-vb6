@@ -87,43 +87,30 @@ Option Explicit
 
 Dim Categories As Collection
 Dim i As Integer
+Dim CategoryRepository As clsCategoryRepository
 
 Private Sub Form_Load()
     Set Categories = New Collection
-    
-    Dim Articles As Collection
-    Set Articles = New Collection
-    Articles.Add modArticleHelper.NewArticle(1, "buzo", "5xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(300, "jean", "40xU", "indumentaria")
-    
-    Categories.Add modCategoryHelper.NewCategory(1, "indumentaria", Articles)
-    Categories.Add modCategoryHelper.NewCategory(2, "remeras", Nothing)
-    Categories.Add modCategoryHelper.NewCategory(3, "pantalones", Nothing)
-    
-    Set Articles = New Collection
-    Articles.Add modArticleHelper.NewArticle(4, "medias", "400xU", "calzado")
-    
-    Categories.Add modCategoryHelper.NewCategory(4, "calzado", Articles)
+    Set CategoryRepository = New clsCategoryRepository
     
     SetHeader "Id", "Name", "Articles"
     SetHeaderWidth 900, 1800, 1200
-    SetDataSource Categories
+    SetDataSource CategoryRepository.GetCategories()
 End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateCategory.Show vbModal
     
     If frmCreateCategory.DialogResult = vbOK Then
-        Categories.Add frmCreateCategory.Category
-        SetDataSource Categories
+        CategoryRepository.CreateCategory frmCreateCategory.Category
+        SetDataSource CategoryRepository.GetCategories()
     End If
 End Sub
 
 Private Sub cmdDelete_Click()
     If Not lvwCategories.SelectedItem Is Nothing Then
-        Categories.Remove (lvwCategories.SelectedItem.Index)
-        SetDataSource Categories
+        CategoryRepository.DeleteCategory (Int(lvwCategories.SelectedItem.Text))
+        SetDataSource CategoryRepository.GetCategories()
     End If
 End Sub
 
