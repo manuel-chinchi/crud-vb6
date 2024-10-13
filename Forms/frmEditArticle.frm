@@ -212,10 +212,14 @@ Private Sub Form_Load()
     txtDetails.Text = mArticle.mDetails
     cboCategories.Text = mArticle.mCategoryName
     
-    Dim arr() As Variant
-    arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
-    
-    SetComboBox arr
+    If CategoryRepository.GetCategories().Count <> 0 Then
+        Dim arr() As Variant
+        
+        arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
+        SetComboBox arr
+    Else
+        cboCategories.Enabled = False
+    End If
 End Sub
 
 Private Sub SetComboBox(ParamArray varParam() As Variant)

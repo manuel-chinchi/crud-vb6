@@ -189,10 +189,14 @@ End Property
 Private Sub Form_Load()
     Set mArticle = New clsArticle
     
-    Dim arr() As Variant
-    arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
-    
-    SetComboBox arr
+    If CategoryRepository.GetCategories().Count <> 0 Then
+        Dim arr() As Variant
+        
+        arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
+        SetComboBox arr
+    Else
+        cboCategories.Enabled = False
+    End If
 End Sub
 
 Private Sub cmdAccept_Click()
