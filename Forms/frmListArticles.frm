@@ -195,6 +195,7 @@ Private Sub cmdEdit_Click()
     
     If frmEditArticle.DialogResult = vbOK Then
         Dim oCurrentArticle As clsArticle
+        
         For Each oCurrentArticle In Articles
             If oCurrentArticle.mId = frmEditArticle.Article.mId Then
                 With oCurrentArticle
@@ -256,7 +257,6 @@ Private Sub SetHeader(ParamArray varParam() As Variant)
             For i = 0 To UBound(varParam)
                 .Add , , varParam(i), 1000
             Next
-            
         End With
     End With
 End Sub
@@ -268,7 +268,6 @@ Private Sub SetHeaderWidth(ParamArray varParam() As Variant)
             For i = 0 To UBound(varParam)
                 .Item(i + 1).Width = varParam(i)
             Next
-            
         End With
     End With
 End Sub

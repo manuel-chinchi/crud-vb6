@@ -135,7 +135,6 @@ Private Sub SetHeader(ParamArray varParam() As Variant)
             For i = 0 To UBound(varParam)
                 .Add , , varParam(i), 1000
             Next
-            
         End With
     End With
 End Sub
