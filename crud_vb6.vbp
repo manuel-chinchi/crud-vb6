@@ -13,6 +13,7 @@ Module=modCategoryHelper; Modules\modCategoryHelper.bas
 Form=Forms\frmCreateCategory.frm
 Class=clsArticleRepository; Classes\Repositories\clsArticleRepository.cls
 Class=clsCategoryRepository; Classes\Repositories\clsCategoryRepository.cls
+Module=modSingletonRepository; Modules\modSingletonRepository.bas
 Startup="frmMain"
 HelpFile=""
 Command32=""

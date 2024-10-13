@@ -176,7 +176,7 @@ Option Explicit
 Dim mArticle As clsArticle
 Dim i As Integer
 Dim mDialogResult As VbMsgBoxResult
-Dim CategoryRepository As clsCategoryRepository
+Public CategoryRepository As clsCategoryRepository
 
 Public Property Get Article() As clsArticle
     Set Article = mArticle
@@ -187,7 +187,6 @@ Public Property Get DialogResult() As VbMsgBoxResult
 End Property
 
 Private Sub Form_Load()
-    Set CategoryRepository = New clsCategoryRepository
     Set mArticle = New clsArticle
     
     Dim arr() As Variant

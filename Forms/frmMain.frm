@@ -94,3 +94,13 @@ End Sub
 Private Sub cmdCategories_Click()
     frmListCategories.Show vbModal
 End Sub
+
+Private Sub Form_Load()
+    InitializeRepositories
+End Sub
+
+Private Sub InitializeRepositories()
+    Set frmCreateArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
+    Set frmListArticles.ArticleRepository = modSingletonRepository.GetArticleRepository()
+    Set frmListCategories.CategoryRepository = modSingletonRepository.GetCategoryRepository()
+End Sub

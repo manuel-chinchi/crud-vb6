@@ -86,11 +86,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Dim CategoryRepository As clsCategoryRepository
+Public CategoryRepository As clsCategoryRepository
 
 Private Sub Form_Load()
-    Set CategoryRepository = New clsCategoryRepository
-    
     SetHeader "Id", "Name", "Articles"
     SetHeaderWidth 900, 1800, 1200
     SetDataSource CategoryRepository.GetCategories()

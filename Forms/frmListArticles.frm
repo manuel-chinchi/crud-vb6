@@ -153,11 +153,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Dim ArticleRepository As clsArticleRepository
+Public ArticleRepository As clsArticleRepository
 
 Private Sub Form_Load()
-    Set ArticleRepository = New clsArticleRepository
-    
     SetHeader "Id", "Name", "Details", "Category"
     SetHeaderWidth 900, 1500, 1800, 1200
     SetDataSource ArticleRepository.GetArticles()
