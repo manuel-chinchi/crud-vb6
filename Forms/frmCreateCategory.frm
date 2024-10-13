@@ -108,9 +108,14 @@ Option Explicit
 
 Dim mCategory As clsCategory
 Dim i As Integer
+Dim mDialogResult As VbMsgBoxResult
 
 Public Property Get Category() As clsCategory
     Set Category = mCategory
+End Property
+
+Public Property Get DialogResult() As VbMsgBoxResult
+    DialogResult = mDialogResult
 End Property
 
 Private Sub Form_Load()
@@ -122,9 +127,13 @@ Private Sub cmdAccept_Click()
         .mName = txtName.Text
     End With
     
+    mDialogResult = vbOK
+    
     Unload Me
 End Sub
 
 Private Sub cmdCancel_Click()
+    mDialogResult = vbCancel
+    
     Unload Me
 End Sub

@@ -113,8 +113,11 @@ End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateCategory.Show vbModal
-    Categories.Add frmCreateCategory.Category
-    SetDataSource Categories
+    
+    If frmCreateCategory.DialogResult = vbOK Then
+        Categories.Add frmCreateCategory.Category
+        SetDataSource Categories
+    End If
 End Sub
 
 Private Sub cmdDelete_Click()

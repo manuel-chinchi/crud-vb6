@@ -170,8 +170,11 @@ End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateArticle.Show vbModal
-    Articles.Add frmCreateArticle.Article
-    SetDataSource Articles
+    
+    If frmCreateArticle.DialogResult = vbOK Then
+        Articles.Add frmCreateArticle.Article
+        SetDataSource Articles
+    End If
 End Sub
 
 Private Sub cmdEdit_Click()
