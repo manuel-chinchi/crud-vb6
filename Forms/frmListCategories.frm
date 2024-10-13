@@ -117,6 +117,13 @@ Private Sub cmdAdd_Click()
     SetDataSource Categories
 End Sub
 
+Private Sub cmdDelete_Click()
+    If Not lvwCategories.SelectedItem Is Nothing Then
+        Categories.Remove (lvwCategories.SelectedItem.Index)
+        SetDataSource Categories
+    End If
+End Sub
+
 Private Sub SetHeader(ParamArray varParam() As Variant)
     With lvwCategories
         With .ColumnHeaders
