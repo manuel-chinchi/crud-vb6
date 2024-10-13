@@ -14,7 +14,7 @@ Begin VB.Form frmListArticles
    ScaleWidth      =   9408
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.TextBox Text1 
+   Begin VB.TextBox txtSearch 
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9
@@ -217,6 +217,37 @@ Private Sub cmdDelete_Click()
     End If
 End Sub
 
+Private Sub cmdSearch_Click()
+    Dim sSearch As String
+    sSearch = txtSearch.Text
+    
+    Dim oArticle As clsArticle
+    Dim arrArticlesFilter As Collection
+    Set arrArticlesFilter = New Collection
+    
+    For Each oArticle In Articles
+        If InStr(1, LCase(oArticle.ToString()), LCase(sSearch)) <> 0 Then
+            arrArticlesFilter.Add oArticle
+        End If
+    Next
+    
+    If Not arrArticlesFilter Is Nothing Then
+        SetDataSource arrArticlesFilter
+    End If
+End Sub
+
+Private Sub txtSearch_KeyPress(KeyAscii As Integer)
+    If KeyAscii = vbKeyReturn Then
+        Call cmdSearch_Click
+    End If
+End Sub
+
+Private Sub cmdShowAll_Click()
+    SetDataSource Articles
+End Sub
+
+
+
 Private Sub SetHeader(ParamArray varParam() As Variant)
     With lvwArticles
         With .ColumnHeaders
@@ -255,3 +286,4 @@ Private Sub SetDataSource(arr As Collection)
         li.SubItems(3) = objArticle.mCategoryName
     Next
 End Sub
+
