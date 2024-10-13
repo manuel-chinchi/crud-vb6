@@ -11,6 +11,7 @@ Class=clsArticle; Classes\clsArticle.cls
 Class=clsCategory; Classes\clsCategory.cls
 Module=modCategoryHelper; Modules\modCategoryHelper.bas
 Form=Forms\frmCreateCategory.frm
+Class=Class1; Classes\Repositories\clsArticleRepository.cls
 Startup="frmMain"
 HelpFile=""
 Command32=""

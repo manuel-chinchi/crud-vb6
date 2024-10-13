@@ -154,26 +154,23 @@ Option Explicit
 
 Dim Articles As Collection
 Dim i As Integer
+Dim ArticleRepository As clsArticleRepository
 
 Private Sub Form_Load()
     Set Articles = New Collection
-    
-    Articles.Add modArticleHelper.NewArticle(1, "buzo", "5xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(300, "jean", "40xU", "indumentaria")
-    Articles.Add modArticleHelper.NewArticle(4, "medias", "400xU", "calzado")
+    Set ArticleRepository = New clsArticleRepository
     
     SetHeader "Id", "Name", "Details", "Category"
     SetHeaderWidth 900, 1500, 1800, 1200
-    SetDataSource Articles
+    SetDataSource ArticleRepository.GetArticles()
 End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateArticle.Show vbModal
     
     If frmCreateArticle.DialogResult = vbOK Then
-        Articles.Add frmCreateArticle.Article
-        SetDataSource Articles
+        ArticleRepository.CreateArticle frmCreateArticle.Article
+        SetDataSource ArticleRepository.GetArticles()
     End If
 End Sub
 
@@ -194,43 +191,23 @@ Private Sub cmdEdit_Click()
     frmEditArticle.Show vbModal
     
     If frmEditArticle.DialogResult = vbOK Then
-        Dim oCurrentArticle As clsArticle
-        
-        For Each oCurrentArticle In Articles
-            If oCurrentArticle.mId = frmEditArticle.Article.mId Then
-                With oCurrentArticle
-                    .mName = frmEditArticle.Article.mName
-                    .mDetails = frmEditArticle.Article.mDetails
-                    .mCategoryName = frmEditArticle.Article.mCategoryName
-                End With
-                Exit For
-            End If
-        Next
+        ArticleRepository.UpdateArticle frmEditArticle.Article
+        SetDataSource ArticleRepository.GetArticles()
     End If
-    
-    SetDataSource Articles
 End Sub
 
 Private Sub cmdDelete_Click()
+    Dim iIdArticle As Integer
     If Not lvwArticles.SelectedItem Is Nothing Then
-        Articles.Remove Int(lvwArticles.SelectedItem.Index)
-        SetDataSource Articles
+        iIdArticle = Int(lvwArticles.SelectedItem.Text)
+        ArticleRepository.DeleteArticle (iIdArticle)
+        SetDataSource ArticleRepository.GetArticles()
     End If
 End Sub
 
 Private Sub cmdSearch_Click()
-    Dim sSearch As String
-    sSearch = txtSearch.Text
-    
-    Dim oArticle As clsArticle
     Dim arrArticlesFilter As Collection
-    Set arrArticlesFilter = New Collection
-    
-    For Each oArticle In Articles
-        If InStr(1, LCase(oArticle.ToString()), LCase(sSearch)) <> 0 Then
-            arrArticlesFilter.Add oArticle
-        End If
-    Next
+    Set arrArticlesFilter = ArticleRepository.SearchArticle(txtSearch.Text)
     
     If Not arrArticlesFilter Is Nothing Then
         SetDataSource arrArticlesFilter
@@ -244,10 +221,8 @@ Private Sub txtSearch_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub cmdShowAll_Click()
-    SetDataSource Articles
+    SetDataSource ArticleRepository.GetArticles()
 End Sub
-
-
 
 Private Sub SetHeader(ParamArray varParam() As Variant)
     With lvwArticles
@@ -285,4 +260,3 @@ Private Sub SetDataSource(arr As Collection)
         li.SubItems(3) = objArticle.mCategoryName
     Next
 End Sub
-
