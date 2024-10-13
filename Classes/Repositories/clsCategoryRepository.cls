@@ -25,14 +25,15 @@ Private Sub Class_Initialize()
     Articles.Add modArticleHelper.NewArticle(2, "remera", "20xU", "indumentaria")
     Articles.Add modArticleHelper.NewArticle(300, "jean", "40xU", "indumentaria")
     
-    Categories.Add modCategoryHelper.NewCategory(1, "indumentaria", Articles)
-    Categories.Add modCategoryHelper.NewCategory(2, "remeras", Nothing)
-    Categories.Add modCategoryHelper.NewCategory(3, "pantalones", Nothing)
+    Categories.Add modCategoryHelper.NewCategory(1, "Remeras", Articles)
+    Categories.Add modCategoryHelper.NewCategory(2, "Zapatillas", Nothing)
+    Categories.Add modCategoryHelper.NewCategory(3, "Jeans", Nothing)
     
     Set Articles = New Collection
-    Articles.Add modArticleHelper.NewArticle(4, "medias", "400xU", "calzado")
+    Articles.Add modArticleHelper.NewArticle(4, "Medias", "400xU", "calzado")
     
-    Categories.Add modCategoryHelper.NewCategory(4, "calzado", Articles)
+    Categories.Add modCategoryHelper.NewCategory(4, "Unisex", Articles)
+    Categories.Add modCategoryHelper.NewCategory(5, "Otro", Nothing)
 End Sub
 
 Private Sub Class_Terminate()

@@ -176,6 +176,7 @@ Option Explicit
 Dim mArticle As clsArticle
 Dim i As Integer
 Dim mDialogResult As VbMsgBoxResult
+Dim CategoryRepository As clsCategoryRepository
 
 Public Property Get Article() As clsArticle
     Set Article = mArticle
@@ -186,9 +187,13 @@ Public Property Get DialogResult() As VbMsgBoxResult
 End Property
 
 Private Sub Form_Load()
+    Set CategoryRepository = New clsCategoryRepository
     Set mArticle = New clsArticle
     
-    SetComboBox "Remeras", "Pantalones", "Unisex"
+    Dim arr() As Variant
+    arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
+    
+    SetComboBox arr
 End Sub
 
 Private Sub cmdAccept_Click()
@@ -211,7 +216,19 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub SetComboBox(ParamArray varParam() As Variant)
-    For i = 0 To UBound(varParam)
-        cboCategories.AddItem varParam(i)
+    'For i = 0 To UBound(varParam)
+    '    cboCategories.AddItem varParam(i)
+    'Next
+    
+    Dim v As Variant
+    
+    For Each v In varParam
+        If IsArray(v) Then
+            For i = LBound(v) To UBound(v)
+                cboCategories.AddItem v(i)
+            Next
+        Else
+            cboCategories.AddItem v
+        End If
     Next
 End Sub
