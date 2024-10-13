@@ -17,5 +17,9 @@ Public mName As String
 Public mArticlesRelated As Collection
 
 Public Property Get ToString() As String
-    ToString = mId & "," & mName & "," & mArticlesRelated
+    If Not mArticlesRelated Is Nothing Then
+        ToString = mId & "," & mName & "," & Str(mArticlesRelated.Count)
+    Else
+        ToString = mId & "," & mName & "," & 0
+    End If
 End Property

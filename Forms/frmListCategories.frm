@@ -111,6 +111,12 @@ Private Sub Form_Load()
     SetDataSource Categories
 End Sub
 
+Private Sub cmdAdd_Click()
+    frmCreateCategory.Show vbModal
+    Categories.Add frmCreateCategory.Category
+    SetDataSource Categories
+End Sub
+
 Private Sub SetHeader(ParamArray varParam() As Variant)
     With lvwCategories
         With .ColumnHeaders
