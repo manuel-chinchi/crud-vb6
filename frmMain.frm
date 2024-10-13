@@ -11,7 +11,6 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    ScaleHeight     =   3144
    ScaleWidth      =   3624
-   ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdReports 
       Caption         =   "Reports"
