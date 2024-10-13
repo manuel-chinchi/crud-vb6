@@ -25,6 +25,7 @@ Begin VB.Form frmListCategories
       View            =   3
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
+      Checkboxes      =   -1  'True
       FullRowSelect   =   -1  'True
       GridLines       =   -1  'True
       _Version        =   393217
@@ -89,8 +90,8 @@ Dim i As Integer
 Public CategoryRepository As clsCategoryRepository
 
 Private Sub Form_Load()
-    SetHeader "Id", "Name", "Articles"
-    SetHeaderWidth 900, 1800, 1200
+    SetHeader " ", "Id", "Name", "Articles"
+    SetHeaderWidth 300, 900, 1800, 1200
     SetDataSource CategoryRepository.GetCategories()
 End Sub
 
@@ -104,8 +105,15 @@ Private Sub cmdAdd_Click()
 End Sub
 
 Private Sub cmdDelete_Click()
-    If Not lvwCategories.SelectedItem Is Nothing Then
-        CategoryRepository.DeleteCategory (Int(lvwCategories.SelectedItem.Text))
+    Dim arrIdsCategoriesSelected As Collection
+    Set arrIdsCategoriesSelected = GetIdsOfCategoriesSelected
+    Dim iId As Variant
+    
+    If arrIdsCategoriesSelected.Count <> 0 Then
+        For Each iId In arrIdsCategoriesSelected
+            CategoryRepository.DeleteCategory (Int(iId))
+        Next
+            
         SetDataSource CategoryRepository.GetCategories()
     End If
 End Sub
@@ -139,12 +147,27 @@ Private Sub SetDataSource(arr As Collection)
     lvwCategories.ListItems.Clear
     
     For Each objCategory In arr
-        Set li = lvwCategories.ListItems.Add(, , objCategory.mId)
-        li.SubItems(1) = objCategory.mName
+        Set li = lvwCategories.ListItems.Add(, , "")
+        li.SubItems(1) = objCategory.mId
+        li.SubItems(2) = objCategory.mName
         If Not objCategory.mArticlesRelated Is Nothing Then
-            li.SubItems(2) = objCategory.mArticlesRelated.Count
+            li.SubItems(3) = objCategory.mArticlesRelated.Count
         Else
-            li.SubItems(2) = 0
+            li.SubItems(3) = 0
         End If
     Next
 End Sub
+
+Private Function GetIdsOfCategoriesSelected() As Collection
+    Dim arrIdsCategories As Collection
+    Set arrIdsCategories = New Collection
+    Dim li As ListItem
+    
+    For Each li In lvwCategories.ListItems
+        If li.Checked Then
+            arrIdsCategories.Add li.SubItems(1)
+        End If
+    Next
+    
+    Set GetIdsOfCategoriesSelected = arrIdsCategories
+End Function

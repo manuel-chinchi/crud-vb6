@@ -33,7 +33,7 @@ Private Sub Class_Initialize()
     Articles.Add modArticleHelper.NewArticle(4, "Medias", "400xU", "calzado")
     
     Categories.Add modCategoryHelper.NewCategory(4, "Unisex", Articles)
-    Categories.Add modCategoryHelper.NewCategory(5, "Otro", Nothing)
+    Categories.Add modCategoryHelper.NewCategory(500, "Otro", Nothing)
 End Sub
 
 Private Sub Class_Terminate()
