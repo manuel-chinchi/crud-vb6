@@ -26,7 +26,7 @@ Begin VB.Form frmEditArticle
       EndProperty
       Height          =   492
       Left            =   120
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   3360
       Width           =   3372
    End
@@ -43,7 +43,7 @@ Begin VB.Form frmEditArticle
       EndProperty
       Height          =   492
       Left            =   120
-      TabIndex        =   3
+      TabIndex        =   5
       Top             =   4200
       Width           =   3372
    End
@@ -59,7 +59,7 @@ Begin VB.Form frmEditArticle
       EndProperty
       Height          =   324
       Left            =   120
-      TabIndex        =   2
+      TabIndex        =   0
       Top             =   1200
       Width           =   3372
    End
@@ -91,7 +91,7 @@ Begin VB.Form frmEditArticle
       EndProperty
       Height          =   312
       Left            =   120
-      TabIndex        =   0
+      TabIndex        =   2
       Text            =   "---Seleccionar---"
       Top             =   2640
       Width           =   3372
@@ -161,7 +161,7 @@ Begin VB.Form frmEditArticle
       EndProperty
       Height          =   252
       Left            =   120
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   2400
       Width           =   1092
    End
