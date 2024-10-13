@@ -174,22 +174,33 @@ End Sub
 Private Sub cmdEdit_Click()
     Dim oArticle As clsArticle
     Set oArticle = New clsArticle
+    
+    Dim iCountSelectedItems As Integer
     Dim li As ListItem
-    Set li = lvwArticles.SelectedItem
-        
-    With oArticle
-        .mId = li.Text
-        .mName = li.SubItems(1)
-        .mDetails = li.SubItems(2)
-        .mCategoryName = li.SubItems(3)
-    End With
     
-    Set frmEditArticle.Article = oArticle
-    frmEditArticle.Show vbModal
+    For Each li In lvwArticles.ListItems
+        If li.Checked Then
+            iCountSelectedItems = iCountSelectedItems + 1
+
+            With oArticle
+                .mId = li.SubItems(1)
+                .mName = li.SubItems(2)
+                .mDetails = li.SubItems(3)
+                .mCategoryName = li.SubItems(4)
+            End With
+        End If
+    Next
     
-    If frmEditArticle.DialogResult = vbOK Then
-        ArticleRepository.UpdateArticle frmEditArticle.Article
-        SetDataSource ArticleRepository.GetArticles()
+    If iCountSelectedItems = 1 Then
+        Set frmEditArticle.Article = oArticle
+        frmEditArticle.Show vbModal
+    
+        If frmEditArticle.DialogResult = vbOK Then
+            ArticleRepository.UpdateArticle frmEditArticle.Article
+            SetDataSource ArticleRepository.GetArticles()
+        End If
+    Else
+        Exit Sub
     End If
 End Sub
 
