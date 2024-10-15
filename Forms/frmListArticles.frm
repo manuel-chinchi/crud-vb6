@@ -161,6 +161,7 @@ Private Sub Form_Load()
     SetHeaderWidth 300, 900, 1500, 1800, 1200
     SetDataSource ArticleRepository.GetArticles()
     cmdEdit.Enabled = False
+    cmdDelete.Enabled = False
 End Sub
 
 Private Sub cmdAdd_Click()
@@ -211,6 +212,10 @@ Private Sub cmdDelete_Click()
     Set arrIdsSelectedArticles = GetIdsOfSelectedArticles
     
     If arrIdsSelectedArticles.Count <> 0 Then
+        Dim AnswerResult As VbMsgBoxResult
+        AnswerResult = MsgBox("Do you want to delete the selected items?", vbExclamation + vbYesNo, "Delete Article")
+        If AnswerResult = vbNo Then Exit Sub
+    
         Dim iId As Variant
         For Each iId In arrIdsSelectedArticles
             ArticleRepository.DeleteArticle (Int(iId))
@@ -226,6 +231,9 @@ Private Sub cmdSearch_Click()
     
     If Not arrArticlesFilter Is Nothing Then
         SetDataSource arrArticlesFilter
+        
+        cmdEdit.Enabled = False
+        cmdDelete.Enabled = False
     End If
 End Sub
 
@@ -238,6 +246,7 @@ End Sub
 Private Sub cmdShowAll_Click()
     SetDataSource ArticleRepository.GetArticles()
     cmdEdit.Enabled = False
+    cmdDelete.Enabled = False
 End Sub
 
 Private Sub lvwArticles_Click()
@@ -248,6 +257,12 @@ Private Sub lvwArticles_Click()
         cmdEdit.Enabled = True
     Else
         cmdEdit.Enabled = False
+    End If
+    
+    If cArray.Count = 0 Then
+        cmdDelete.Enabled = False
+    Else
+        cmdDelete.Enabled = True
     End If
 End Sub
 

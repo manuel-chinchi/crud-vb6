@@ -93,6 +93,7 @@ Private Sub Form_Load()
     SetHeader " ", "Id", "Name", "Articles"
     SetHeaderWidth 300, 900, 1800, 1200
     SetDataSource CategoryRepository.GetCategories()
+    cmdDelete.Enabled = False
 End Sub
 
 Private Sub cmdAdd_Click()
@@ -110,6 +111,10 @@ Private Sub cmdDelete_Click()
     Dim iId As Variant
     
     If arrIdsCategoriesSelected.Count <> 0 Then
+        Dim AnswerResult As VbMsgBoxResult
+        AnswerResult = MsgBox("Do you want to delete the selected items?", vbExclamation + vbYesNo, "Delete Article")
+        If AnswerResult = vbNo Then Exit Sub
+    
         For Each iId In arrIdsCategoriesSelected
             CategoryRepository.DeleteCategory (Int(iId))
         Next
@@ -171,3 +176,14 @@ Private Function GetIdsOfSelectedCategories() As Collection
     
     Set GetIdsOfSelectedCategories = arrIdsCategories
 End Function
+
+Private Sub lvwCategories_Click()
+    Dim cArray As Collection
+    Set cArray = GetIdsOfSelectedCategories
+    
+    If cArray.Count = 0 Then
+        cmdDelete.Enabled = False
+    Else
+        cmdDelete.Enabled = True
+    End If
+End Sub
