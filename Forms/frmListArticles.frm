@@ -160,6 +160,7 @@ Private Sub Form_Load()
     SetHeader " ", "Id", "Name", "Details", "Category"
     SetHeaderWidth 300, 900, 1500, 1800, 1200
     SetDataSource ArticleRepository.GetArticles()
+    cmdEdit.Enabled = False
 End Sub
 
 Private Sub cmdAdd_Click()
@@ -198,6 +199,7 @@ Private Sub cmdEdit_Click()
         If frmEditArticle.DialogResult = vbOK Then
             ArticleRepository.UpdateArticle frmEditArticle.Article
             SetDataSource ArticleRepository.GetArticles()
+            cmdEdit.Enabled = False
         End If
     Else
         Exit Sub
@@ -235,6 +237,18 @@ End Sub
 
 Private Sub cmdShowAll_Click()
     SetDataSource ArticleRepository.GetArticles()
+    cmdEdit.Enabled = False
+End Sub
+
+Private Sub lvwArticles_Click()
+    Dim cArray As Collection
+    Set cArray = GetIdsOfSelectedArticles
+    
+    If cArray.Count = 1 Then
+        cmdEdit.Enabled = True
+    Else
+        cmdEdit.Enabled = False
+    End If
 End Sub
 
 Private Sub SetHeader(ParamArray varParam() As Variant)
