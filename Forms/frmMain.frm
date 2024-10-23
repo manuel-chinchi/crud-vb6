@@ -95,6 +95,10 @@ Private Sub cmdCategories_Click()
     frmListCategories.Show vbModal
 End Sub
 
+Private Sub cmdReports_Click()
+    frmReports.Show vbModal
+End Sub
+
 Private Sub Form_Load()
     InitializeRepositories
 End Sub
