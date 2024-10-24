@@ -49,11 +49,11 @@ Begin VB.Form frmReports
       Width           =   4692
    End
    Begin CRVIEWERLibCtl.CRViewer crViewer 
-      Height          =   10692
-      Left            =   120
+      Height          =   10812
+      Left            =   0
       TabIndex        =   0
-      Top             =   120
-      Width           =   9612
+      Top             =   0
+      Width           =   9852
       DisplayGroupTree=   0   'False
       DisplayToolbar  =   -1  'True
       EnableGroupTree =   -1  'True
@@ -69,8 +69,8 @@ Begin VB.Form frmReports
       EnableAnimationControl=   -1  'True
       EnableSelectExpertButton=   0   'False
       EnableToolbar   =   -1  'True
-      DisplayBorder   =   -1  'True
-      DisplayTabs     =   -1  'True
+      DisplayBorder   =   0   'False
+      DisplayTabs     =   0   'False
       DisplayBackgroundEdge=   -1  'True
       SelectionFormula=   ""
       EnablePopupMenu =   -1  'True
