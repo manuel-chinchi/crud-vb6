@@ -184,7 +184,7 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
     crViewer.Zoom ZOOM_FULL_PAGE
 End Sub
 
-Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String)
+Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Optional bShowDialog As Boolean = False)
     If crxReport Is Nothing Then Exit Sub
 
     Dim crxExportOptions As CRAXDRT.ExportOptions
@@ -203,7 +203,7 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String)
         .PDFExportAllPages = True
     End With
     
-    crxReport.Export False
+    crxReport.Export bShowDialog
 End Sub
 
 Private Sub LoadCombobox(ParamArray vParam() As Variant)
