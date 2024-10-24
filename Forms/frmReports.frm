@@ -117,7 +117,7 @@ End Enum
 Property Get GetPathOfReport(eReportType As ReportType) As String
     Select Case eReportType
         Case ArticleReport
-            GetPathOfReport = App.Path & "\Reports\ArticleReport.rpt"
+            GetPathOfReport = App.Path & "\Reports\ArticlesReport.rpt"
     End Select
 End Property
 
@@ -129,11 +129,19 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub cmdExportPDF_Click()
-    ExportToPDF m_crxReport, App.Path & "\1.pdf"
+    ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
 End Sub
 
 Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Recordset)
     Dim crxApp As New CRAXDRT.Application
+    Dim sPathReport As String
+    
+    sPathReport = Me.GetPathOfReport(ArticleReport)
+    
+    If Dir(sPathReport) = "" Then
+        MsgBox "File not found: " & sPathReport, vbCritical, "LoadReport - Error"
+        Exit Sub
+    End If
     
     Set crxReport = crxApp.OpenReport(Me.GetPathOfReport(ArticleReport))
     
@@ -145,6 +153,8 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
 End Sub
 
 Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String)
+    If crxReport Is Nothing Then Exit Sub
+
     Dim crxExportOptions As CRAXDRT.ExportOptions
     
     With crxReport
