@@ -90,7 +90,7 @@ Begin VB.Form frmReports
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   372
+      Height          =   252
       Left            =   3480
       TabIndex        =   1
       Top             =   10920
@@ -106,18 +106,23 @@ Option Explicit
 
 
 Dim m_crxReport As CRAXDRT.Report
+Dim i As Integer
 
 Const ZOOM_FULL_WIDTH As Integer = 1
 Const ZOOM_FULL_PAGE As Integer = 2
 
-Enum ReportType
-    ArticleReport = 1
+Enum eReportType
+    ArticleReport = 0
+    CategoriesReport = 1
 End Enum
 
-Property Get GetPathOfReport(eReportType As ReportType) As String
+Property Get GetPathOfReport(eReportType As eReportType) As String
     Select Case eReportType
         Case ArticleReport
             GetPathOfReport = App.Path & "\Reports\ArticlesReport.rpt"
+            
+        Case CategoriesReport
+            GetPathOfReport = App.Path & "\Reports\CategoriesReport.rpt"
     End Select
 End Property
 
@@ -125,25 +130,49 @@ Private Sub Form_Load()
     Dim rsData As ADODB.Recordset
     Set rsData = modArticleHelper.ConvertToRecordset(modSingletonRepository.GetArticleRepository().GetArticles())
     
-    LoadReport m_crxReport, rsData
+    LoadReport m_crxReport, rsData, Me.GetPathOfReport(ArticleReport)
+    
+    LoadCombobox "ArticlesReport", "CategoriesReport"
+    
+    cboReports.Text = "ArticlesReport"
 End Sub
 
 Private Sub cmdExportPDF_Click()
-    ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
+    Select Case cboReports.ListIndex
+        Case eReportType.ArticleReport
+            ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
+            
+        Case eReportType.CategoriesReport
+            ExportToPDF m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
+    End Select
 End Sub
 
-Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Recordset)
-    Dim crxApp As New CRAXDRT.Application
+Private Sub cboReports_Click()
     Dim sPathReport As String
+    Dim rsData As ADODB.Recordset
     
-    sPathReport = Me.GetPathOfReport(ArticleReport)
+    Select Case cboReports.ListIndex
+        Case eReportType.ArticleReport '0
+            Set rsData = modArticleHelper.ConvertToRecordset(modSingletonRepository.GetArticleRepository().GetArticles())
+            sPathReport = Me.GetPathOfReport(ArticleReport)
+            
+        Case eReportType.CategoriesReport '1
+            Set rsData = modCategoryHelper.ConvertToRecordset(modSingletonRepository.GetCategoryRepository().GetCategories())
+            sPathReport = Me.GetPathOfReport(CategoriesReport)
+    End Select
+        
+    LoadReport m_crxReport, rsData, sPathReport
+End Sub
+
+Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Recordset, Optional sPathReport As String)
+    Static crxApp As New CRAXDRT.Application
     
     If Dir(sPathReport) = "" Then
         MsgBox "File not found: " & sPathReport, vbCritical, "LoadReport - Error"
         Exit Sub
     End If
-    
-    Set crxReport = crxApp.OpenReport(Me.GetPathOfReport(ArticleReport))
+
+    Set crxReport = crxApp.OpenReport(sPathReport)
     
     crxReport.Database.SetDataSource rsData
     
@@ -172,4 +201,10 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String)
     End With
     
     crxReport.Export False
+End Sub
+
+Private Sub LoadCombobox(ParamArray vParam() As Variant)
+    For i = 0 To UBound(vParam)
+        cboReports.AddItem vParam(i)
+    Next
 End Sub

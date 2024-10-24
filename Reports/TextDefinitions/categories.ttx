@@ -1,0 +1,3 @@
+mId	Number
+mName	String	255
+mArticlesCount	Number
