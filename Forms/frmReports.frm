@@ -3,14 +3,14 @@ Object = "{C4847593-972C-11D0-9567-00A0C9273C2A}#8.0#0"; "crviewer.dll"
 Begin VB.Form frmReports 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Reports"
-   ClientHeight    =   11412
+   ClientHeight    =   11292
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   9852
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   11412
+   ScaleHeight     =   11292
    ScaleWidth      =   9852
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -25,27 +25,27 @@ Begin VB.Form frmReports
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   372
+      Height          =   348
       Left            =   1920
       TabIndex        =   3
-      Top             =   10920
+      Top             =   10900
       Width           =   1452
    End
    Begin VB.ComboBox cboReports 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9
+         Size            =   10.2
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   312
+      Height          =   348
       Left            =   5040
       TabIndex        =   2
       Text            =   "---Seleccionar---"
-      Top             =   10920
+      Top             =   10900
       Width           =   4692
    End
    Begin CRVIEWERLibCtl.CRViewer crViewer 
@@ -83,7 +83,7 @@ Begin VB.Form frmReports
       Caption         =   "Choose report:"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9
+         Size            =   10.2
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -138,6 +138,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub cmdExportPDF_Click()
+    Debug.Print "-"
     Select Case cboReports.ListIndex
         Case eReportType.ArticleReport
             ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
