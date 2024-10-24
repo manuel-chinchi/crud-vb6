@@ -138,13 +138,15 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub cmdExportPDF_Click()
-    Debug.Print "-"
     Select Case cboReports.ListIndex
         Case eReportType.ArticleReport
             ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
             
         Case eReportType.CategoriesReport
             ExportToPDF m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
+
+        Case Else
+            ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf"
     End Select
 End Sub
 
