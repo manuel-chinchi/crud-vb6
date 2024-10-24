@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{C4847593-972C-11D0-9567-00A0C9273C2A}#8.0#0"; "crviewer.dll"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmReports 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Reports"
@@ -14,6 +15,13 @@ Begin VB.Form frmReports
    ScaleWidth      =   9852
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin MSComDlg.CommonDialog dlgSaveAs 
+      Left            =   1320
+      Top             =   10800
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+   End
    Begin VB.CommandButton cmdExportPDF 
       Caption         =   "Export to PDF"
       BeginProperty Font 
@@ -184,7 +192,7 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
     crViewer.Zoom ZOOM_FULL_PAGE
 End Sub
 
-Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Optional bShowDialog As Boolean = False)
+Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Optional bShowDialogbox As Boolean = False)
     If crxReport Is Nothing Then Exit Sub
 
     Dim crxExportOptions As CRAXDRT.ExportOptions
@@ -193,6 +201,29 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Option
         .EnableParameterPrompting = False
         .MorePrintEngineErrorMessages = False '*
     End With
+    
+    If bShowDialogbox Then
+        With dlgSaveAs
+            .CancelError = True
+            .Filter = "PDF Files (*.pdf)|*.pdf"
+            .DialogTitle = "Save PDF As"
+            .FileName = sFileName
+            .InitDir = App.Path
+            
+            On Error Resume Next
+            .ShowSave
+            
+            If Err.Number <> 0 Then
+                MsgBox "Export canceled.", vbInformation
+                Exit Sub
+            End If
+            
+            sFileName = .FileName
+            On Error GoTo 0
+        End With
+        
+        bShowDialogbox = False
+    End If
     
     Set crxExportOptions = crxReport.ExportOptions
     
@@ -203,7 +234,7 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Option
         .PDFExportAllPages = True
     End With
     
-    crxReport.Export bShowDialog
+    crxReport.Export bShowDialogbox
 End Sub
 
 Private Sub LoadCombobox(ParamArray vParam() As Variant)
