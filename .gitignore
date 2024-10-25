@@ -6,11 +6,4 @@
 *.zip
 *.log
 
-# folders
-bin/*
-Libraries/*
-# Reports/*
-Dependences/*
-Scripts/*
-
-*.txt
+bin/
