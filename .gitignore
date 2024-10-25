@@ -5,3 +5,5 @@
 *.db
 *.zip
 *.log
+
+bin/

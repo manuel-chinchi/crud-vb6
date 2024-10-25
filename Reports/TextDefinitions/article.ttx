@@ -1,0 +1,4 @@
+mId 	Number
+mName 	String 	255
+mDetails 	String 	255
+mCategoryName 	String 	255

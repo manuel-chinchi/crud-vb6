@@ -29,3 +29,34 @@ Public Function ConvertToVariant(arr As Collection) As Variant
     Next
     ConvertToVariant = vArray
 End Function
+
+Public Function ConvertToRecordset(arr As Collection) As ADODB.Recordset
+    Dim rs As New ADODB.Recordset
+    Dim obj As clsCategory
+    
+    rs.Fields.Append "mId", adInteger
+    rs.Fields.Append "mName", adVarChar, 255
+    rs.Fields.Append "mArticlesCount", adInteger
+    
+    rs.Open
+    Dim iArticlesCount As Integer
+    For Each obj In arr
+        rs.AddNew
+        rs.Fields("mId").Value = obj.mId
+        rs.Fields("mName").Value = obj.mName
+        If obj.mArticlesRelated Is Nothing Then
+            iArticlesCount = 0
+        Else
+            iArticlesCount = obj.mArticlesRelated.Count
+        End If
+        'If obj.mArticlesRelated Is Nothing Then
+        '    Set rs.Fields("mArticlesCount").Value = obj.mArticlesRelated.Count
+        'Else
+        '    rs.Fields("mArticlesCount").Value = 0
+        'End If
+        rs.Fields("mArticlesCount").Value = iArticlesCount
+        rs.Update
+    Next obj
+    
+    Set ConvertToRecordset = rs
+End Function
