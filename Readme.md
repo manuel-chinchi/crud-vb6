@@ -12,26 +12,26 @@ Simple CRUD made with VB6 and Crystal Reports 8.5.
 Menu
 
 <p align="center">
-	<img src=".resources/screenshots/2024-10-25 20_43_20-Main.PNG" width="243">
+	<img src=".resources/screenshots/2024-10-25 20_43_20-Main.png" width="243">
 </p>
 
 Articles panel
 
 <p align="center">
-	<img src=".resources/screenshots/2024-10-25 20_52_32-ListArticles.PNG" width="629">
+	<img src=".resources/screenshots/2024-10-25 20_52_32-ListArticles.png" width="629">
 </p>
 
 <br>
 <br>
 
 <p align="center">
-	<img src=".resources/screenshots/2024-10-25 20_54_18-CreateArticle.PNG" width="243">
+	<img src=".resources/screenshots/2024-10-25 20_54_18-CreateArticle.png" width="243">
 </p>
 
 Reports
 
 <p align="center">
-	<img src=".resources/screenshots/2024-10-25 20_50_16-Reports.PNG" width="658">
+	<img src=".resources/screenshots/2024-10-25 20_50_16-Reports.png" width="658">
 </p>
 
 <br>
