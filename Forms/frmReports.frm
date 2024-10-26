@@ -6,7 +6,7 @@ Begin VB.Form frmReports
    Caption         =   "Reports"
    ClientHeight    =   11292
    ClientLeft      =   36
-   ClientTop       =   360
+   ClientTop       =   660
    ClientWidth     =   9852
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -16,28 +16,11 @@ Begin VB.Form frmReports
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin MSComDlg.CommonDialog dlgSaveAs 
-      Left            =   1320
+      Left            =   120
       Top             =   10800
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
-   End
-   Begin VB.CommandButton cmdExportPDF 
-      Caption         =   "Export to PDF"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   348
-      Left            =   1920
-      TabIndex        =   3
-      Top             =   10900
-      Width           =   1452
    End
    Begin VB.ComboBox cboReports 
       BeginProperty Font 
@@ -104,6 +87,18 @@ Begin VB.Form frmReports
       Top             =   10920
       Width           =   1452
    End
+   Begin VB.Menu mnuSaveAs 
+      Caption         =   "Save as"
+      Begin VB.Menu miSaveAs_Excel 
+         Caption         =   "Excel"
+      End
+      Begin VB.Menu miSaveAs_PDF 
+         Caption         =   "PDF"
+      End
+      Begin VB.Menu miSaveAs_Word 
+         Caption         =   "Word"
+      End
+   End
 End
 Attribute VB_Name = "frmReports"
 Attribute VB_GlobalNameSpace = False
@@ -122,6 +117,12 @@ Const ZOOM_FULL_PAGE As Integer = 2
 Enum eReportType
     ArticleReport = 0
     CategoriesReport = 1
+End Enum
+
+Enum eFormatType
+    ftExcel = 0
+    ftPDF = 1
+    ftWord = 2
 End Enum
 
 Property Get GetPathOfReport(eReportType As eReportType) As String
@@ -145,16 +146,42 @@ Private Sub Form_Load()
     cboReports.Text = "ArticlesReport"
 End Sub
 
-Private Sub cmdExportPDF_Click()
+Private Sub miSaveAs_Excel_Click()
     Select Case cboReports.ListIndex
         Case eReportType.ArticleReport
-            ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
             
         Case eReportType.CategoriesReport
-            ExportToPDF m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
+            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
 
         Case Else
-            ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+    End Select
+End Sub
+
+Private Sub miSaveAs_PDF_Click()
+    Select Case cboReports.ListIndex
+        Case eReportType.ArticleReport
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
+            
+        Case eReportType.CategoriesReport
+            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
+
+        Case Else
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
+    End Select
+End Sub
+
+Private Sub miSaveAs_Word_Click()
+    Select Case cboReports.ListIndex
+        Case eReportType.ArticleReport
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+            
+        Case eReportType.CategoriesReport
+            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+
+        Case Else
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
     End Select
 End Sub
 
@@ -192,21 +219,30 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
     crViewer.Zoom ZOOM_FULL_PAGE
 End Sub
 
-Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Optional bShowDialogbox As Boolean = False)
-    If crxReport Is Nothing Then Exit Sub
-
+Private Sub ExportReport(crxReport As CRAXDRT.Report, sFileName As String, eFormatType As eFormatType, Optional bShowDialogbox As Boolean = False)
     Dim crxExportOptions As CRAXDRT.ExportOptions
     
     With crxReport
         .EnableParameterPrompting = False
-        .MorePrintEngineErrorMessages = False '*
+        .MorePrintEngineErrorMessages = False
     End With
     
     If bShowDialogbox Then
         With dlgSaveAs
             .CancelError = True
-            .Filter = "PDF Files (*.pdf)|*.pdf"
-            .DialogTitle = "Save PDF As"
+            
+            Select Case eFormatType
+                Case ftPDF
+                    .Filter = "PDF Files (*.pdf)|*.pdf"
+                    
+                Case ftExcel
+                    .Filter = "Excel Files (*.xls)|*.xls"
+                
+                Case ftWord
+                    .Filter = "Word Files (*.doc)|*.doc"
+            End Select
+            
+            .DialogTitle = "Save As"
             .FileName = sFileName
             .InitDir = App.Path
             
@@ -230,7 +266,18 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Option
     With crxExportOptions
         .DestinationType = crEDTDiskFile
         .DiskFileName = sFileName
-        .FormatType = crEFTPortableDocFormat
+        
+        Select Case eFormatType
+            Case ftPDF
+                .FormatType = crEFTPortableDocFormat
+                
+            Case ftExcel
+                .FormatType = crEFTExcel80
+                
+            Case ftWord
+                .FormatType = crEFTWordForWindows
+        End Select
+        
         .PDFExportAllPages = True
     End With
     
@@ -242,3 +289,4 @@ Private Sub LoadCombobox(ParamArray vParam() As Variant)
         cboReports.AddItem vParam(i)
     Next
 End Sub
+
