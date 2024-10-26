@@ -119,6 +119,12 @@ Enum eReportType
     CategoriesReport = 1
 End Enum
 
+Enum eFormatType
+    ftExcel = 0
+    ftPDF = 1
+    ftWord = 2
+End Enum
+
 Property Get GetPathOfReport(eReportType As eReportType) As String
     Select Case eReportType
         Case ArticleReport
@@ -129,10 +135,6 @@ Property Get GetPathOfReport(eReportType As eReportType) As String
     End Select
 End Property
 
-Private Sub cmdSaveAs_Click()
-    PopupMenu mnuExport
-End Sub
-
 Private Sub Form_Load()
     Dim rsData As ADODB.Recordset
     Set rsData = modArticleHelper.ConvertToRecordset(modSingletonRepository.GetArticleRepository().GetArticles())
@@ -142,30 +144,45 @@ Private Sub Form_Load()
     LoadCombobox "ArticlesReport", "CategoriesReport"
     
     cboReports.Text = "ArticlesReport"
-    
-    miSaveAs_Excel.Enabled = False
-    miSaveAs_Word.Enabled = False
 End Sub
 
 Private Sub miSaveAs_Excel_Click()
-    'TODO
+    Select Case cboReports.ListIndex
+        Case eReportType.ArticleReport
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+            
+        Case eReportType.CategoriesReport
+            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+
+        Case Else
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+    End Select
 End Sub
 
 Private Sub miSaveAs_PDF_Click()
     Select Case cboReports.ListIndex
         Case eReportType.ArticleReport
-            ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
             
         Case eReportType.CategoriesReport
-            ExportToPDF m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
+            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
 
         Case Else
-            ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
     End Select
 End Sub
 
 Private Sub miSaveAs_Word_Click()
-    'TODO
+    Select Case cboReports.ListIndex
+        Case eReportType.ArticleReport
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+            
+        Case eReportType.CategoriesReport
+            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+
+        Case Else
+            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+    End Select
 End Sub
 
 Private Sub cboReports_Click()
@@ -202,21 +219,30 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
     crViewer.Zoom ZOOM_FULL_PAGE
 End Sub
 
-Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Optional bShowDialogbox As Boolean = False)
-    If crxReport Is Nothing Then Exit Sub
-
+Private Sub ExportReport(crxReport As CRAXDRT.Report, sFileName As String, eFormatType As eFormatType, Optional bShowDialogbox As Boolean = False)
     Dim crxExportOptions As CRAXDRT.ExportOptions
     
     With crxReport
         .EnableParameterPrompting = False
-        .MorePrintEngineErrorMessages = False '*
+        .MorePrintEngineErrorMessages = False
     End With
     
     If bShowDialogbox Then
         With dlgSaveAs
             .CancelError = True
-            .Filter = "PDF Files (*.pdf)|*.pdf"
-            .DialogTitle = "Save PDF As"
+            
+            Select Case eFormatType
+                Case ftPDF
+                    .Filter = "PDF Files (*.pdf)|*.pdf"
+                    
+                Case ftExcel
+                    .Filter = "Excel Files (*.xls)|*.xls"
+                
+                Case ftWord
+                    .Filter = "Word Files (*.doc)|*.doc"
+            End Select
+            
+            .DialogTitle = "Save As"
             .FileName = sFileName
             .InitDir = App.Path
             
@@ -240,11 +266,22 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Option
     With crxExportOptions
         .DestinationType = crEDTDiskFile
         .DiskFileName = sFileName
-        .FormatType = crEFTPortableDocFormat
+        
+        Select Case eFormatType
+            Case ftPDF
+                .FormatType = crEFTPortableDocFormat
+                
+            Case ftExcel
+                .FormatType = crEFTExcel80
+                
+            Case ftWord
+                .FormatType = crEFTWordForWindows
+        End Select
+        
         .PDFExportAllPages = True
     End With
     
-    crxReport.export bShowDialogbox
+    crxReport.Export bShowDialogbox
 End Sub
 
 Private Sub LoadCombobox(ParamArray vParam() As Variant)
