@@ -7,6 +7,40 @@ Simple CRUD made with VB6 and Crystal Reports 8.5.
 - Microsoft Visual Basic 6.0
 - Crystal Reports 8.5
 
+## Screenshots
+
+Menu
+
+<p align="center">
+	<img src=".resources/screenshots/2024-10-25 20_43_20-Main.PNG" width="243">
+</p>
+
+Articles panel
+
+<p align="center">
+	<img src=".resources/screenshots/2024-10-25 20_52_32-ListArticles.PNG" width="629">
+</p>
+
+<br>
+<br>
+
+<p align="center">
+	<img src=".resources/screenshots/2024-10-25 20_54_18-CreateArticle.PNG" width="243">
+</p>
+
+Reports
+
+<p align="center">
+	<img src=".resources/screenshots/2024-10-25 20_50_16-Reports.PNG" width="658">
+</p>
+
+<br>
+<!--
+	Nota: No se porque pero para que las imagenes se vean con buena calidad tuve que
+	poner el ancho real de la imagen * 0.8. Por ej. 304 * 0.8 ~= 243. Así las caputras
+	se ven igual que cuando se abren desde algún visualizador de imagenes en Windows.
+-->
+
 ## Errors with CR 8.5
 
 This is a list of some errors I encountered when working with CR 8.5 and wanting 
