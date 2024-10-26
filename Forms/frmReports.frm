@@ -6,7 +6,7 @@ Begin VB.Form frmReports
    Caption         =   "Reports"
    ClientHeight    =   11292
    ClientLeft      =   36
-   ClientTop       =   360
+   ClientTop       =   660
    ClientWidth     =   9852
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -16,28 +16,11 @@ Begin VB.Form frmReports
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin MSComDlg.CommonDialog dlgSaveAs 
-      Left            =   1320
+      Left            =   120
       Top             =   10800
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
-   End
-   Begin VB.CommandButton cmdExportPDF 
-      Caption         =   "Export to PDF"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   348
-      Left            =   1920
-      TabIndex        =   3
-      Top             =   10900
-      Width           =   1452
    End
    Begin VB.ComboBox cboReports 
       BeginProperty Font 
@@ -104,6 +87,18 @@ Begin VB.Form frmReports
       Top             =   10920
       Width           =   1452
    End
+   Begin VB.Menu mnuSaveAs 
+      Caption         =   "Save as"
+      Begin VB.Menu miSaveAs_Excel 
+         Caption         =   "Excel"
+      End
+      Begin VB.Menu miSaveAs_PDF 
+         Caption         =   "PDF"
+      End
+      Begin VB.Menu miSaveAs_Word 
+         Caption         =   "Word"
+      End
+   End
 End
 Attribute VB_Name = "frmReports"
 Attribute VB_GlobalNameSpace = False
@@ -134,6 +129,10 @@ Property Get GetPathOfReport(eReportType As eReportType) As String
     End Select
 End Property
 
+Private Sub cmdSaveAs_Click()
+    PopupMenu mnuExport
+End Sub
+
 Private Sub Form_Load()
     Dim rsData As ADODB.Recordset
     Set rsData = modArticleHelper.ConvertToRecordset(modSingletonRepository.GetArticleRepository().GetArticles())
@@ -143,9 +142,16 @@ Private Sub Form_Load()
     LoadCombobox "ArticlesReport", "CategoriesReport"
     
     cboReports.Text = "ArticlesReport"
+    
+    miSaveAs_Excel.Enabled = False
+    miSaveAs_Word.Enabled = False
 End Sub
 
-Private Sub cmdExportPDF_Click()
+Private Sub miSaveAs_Excel_Click()
+    'TODO
+End Sub
+
+Private Sub miSaveAs_PDF_Click()
     Select Case cboReports.ListIndex
         Case eReportType.ArticleReport
             ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
@@ -156,6 +162,10 @@ Private Sub cmdExportPDF_Click()
         Case Else
             ExportToPDF m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", True
     End Select
+End Sub
+
+Private Sub miSaveAs_Word_Click()
+    'TODO
 End Sub
 
 Private Sub cboReports_Click()
@@ -234,7 +244,7 @@ Private Sub ExportToPDF(crxReport As CRAXDRT.Report, sFileName As String, Option
         .PDFExportAllPages = True
     End With
     
-    crxReport.Export bShowDialogbox
+    crxReport.export bShowDialogbox
 End Sub
 
 Private Sub LoadCombobox(ParamArray vParam() As Variant)
@@ -242,3 +252,4 @@ Private Sub LoadCombobox(ParamArray vParam() As Variant)
         cboReports.AddItem vParam(i)
     Next
 End Sub
+
