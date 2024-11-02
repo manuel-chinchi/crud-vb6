@@ -1,3 +1,3 @@
-delete from Articles
-where
-	Id=@Id
+DELETE FROM Articles
+WHERE
+	Id = @Id

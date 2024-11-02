@@ -14,15 +14,3 @@ INSERT INTO Articles
 			('Buzo t/canguro', '5xU', datetime('now'), NULL, 2),
 			('Jean elastizado', '10xU', datetime('now'), NULL, 2),
 			('Gorra blanca', '15xU', datetime('now'), NULL, 2)
-
-			
-			
-SELECT * from Categories 
-select * from Articles 			
-DELETE from 'Categories'  ---borrar todos registros
-
-drop TABLE Categories
-drop TABLE Articles
-
-strftime('%m/%d/%Y', date('now')) 
-date('now')

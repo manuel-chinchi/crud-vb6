@@ -1,1 +1,1 @@
-delete from Categories where Id=@Id
+DELETE FROM Categories WHERE Id = @Id

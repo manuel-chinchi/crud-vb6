@@ -1,4 +1,4 @@
-insert into Categories 
-	('Name','State','CreateAt','UpdateAt')
-values
-	(@Name,1,@CreateAt,NULL)
+INSERT INTO Categories 
+	('Name', 'State', 'CreateAt', 'UpdateAt')
+VALUES
+	(@Name, 1, @CreateAt, NULL)

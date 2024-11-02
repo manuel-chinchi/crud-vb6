@@ -1,1 +1,1 @@
-select * from Articles a WHERE a.CategoryId = @CategoryId
+SELECT * FROM Articles WHERE CategoryId = @CategoryId
