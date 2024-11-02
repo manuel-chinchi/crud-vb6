@@ -1,0 +1,1 @@
+select * from Articles a WHERE a.CategoryId = @CategoryId

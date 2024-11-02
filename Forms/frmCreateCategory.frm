@@ -137,3 +137,10 @@ Private Sub cmdCancel_Click()
     
     Unload Me
 End Sub
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Select Case UnloadMode
+        Case vbFormControlMenu 'X'
+            mDialogResult = vbCancel
+    End Select
+End Sub

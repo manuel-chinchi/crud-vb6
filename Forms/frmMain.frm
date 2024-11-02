@@ -87,6 +87,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
+Private Declare Function CopyFile Lib "kernel32" Alias "CopyFileA" (ByVal lpExistingFileName As String, ByVal lpNewFileName As String, ByVal bFailIfExists As Long) As Long
+Private Declare Function DeleteFile Lib "kernel32" Alias "DeleteFileA" (ByVal lpFileName As String) As Long
+
 Private Sub cmdArticles_Click()
     frmListArticles.Show vbModal
 End Sub
@@ -101,28 +106,25 @@ End Sub
 
 Private Sub Form_Load()
     InitializeRepositories
+    
+    'FileCopy App.Path & "\Dependences\SQLite\sqlite.dll", App.Path & "\sqlite.dll"
+    CopyFile App.Path & "\Dependences\SQLite\sqlite.dll", App.Path & "\sqlite.dll", False
 End Sub
 
 Private Sub InitializeRepositories()
-    ' ~~~~~~~~~~~ static data ~~~~~~~~~~~
-    Dim ArticleRepository As clsArticleRepository
-    Dim CategoryRepository As clsCategoryRepository
-    
-    Set ArticleRepository = modSingletonRepository.GetArticleRepository()
-    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
-    
-    ArticleRepository.CreateArticle modArticleHelper.NewArticle(1, "Buzo", "5xU", "Otro")
-    ArticleRepository.CreateArticle modArticleHelper.NewArticle(2, "Jean", "15xU", "Otro")
-    ArticleRepository.CreateArticle modArticleHelper.NewArticle(3, "Gorra", "25xU", "Otro")
-    
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(1, "Remeras", Nothing)
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(2, "Pantalones", Nothing)
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(3, "Zapatillas", Nothing)
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(4, "Otro", Nothing)
-    ' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
     Set frmCreateArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
     Set frmListArticles.ArticleRepository = modSingletonRepository.GetArticleRepository()
     Set frmListCategories.CategoryRepository = modSingletonRepository.GetCategoryRepository()
     Set frmEditArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    DeleteAFile App.Path & "\sqlite.dll"
+End Sub
+
+Sub DeleteAFile(filePath)
+   Dim fso
+   Set fso = CreateObject("Scripting.FileSystemObject")
+   SetAttr filePath, vbNormal
+   fso.DeleteFile (filePath)
 End Sub

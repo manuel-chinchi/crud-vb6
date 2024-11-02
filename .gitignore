@@ -2,7 +2,7 @@
 
 *.vbw
 *.SCC
-*.db
+# *.db
 *.zip
 *.log
 

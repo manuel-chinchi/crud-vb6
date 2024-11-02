@@ -1,0 +1,1 @@
+delete from Categories where Id=@Id

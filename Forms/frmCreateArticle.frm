@@ -186,6 +186,19 @@ Public Property Get DialogResult() As VbMsgBoxResult
     DialogResult = mDialogResult
 End Property
 
+Public Property Get CategoryId() As Integer
+    Dim oCategory As clsCategory
+    Dim cCategories As New Collection
+    
+    Set cCategories = CategoryRepository.GetCategories()
+    For Each oCategory In cCategories
+        If cboCategories.Text = oCategory.mName Then
+            CategoryId = oCategory.mId
+            Exit For
+        End If
+    Next oCategory
+End Property
+
 Private Sub Form_Load()
     Set mArticle = New clsArticle
     
@@ -197,6 +210,8 @@ Private Sub Form_Load()
     Else
         cboCategories.Enabled = False
     End If
+    
+    cboCategories.ListIndex = 0
 End Sub
 
 Private Sub cmdAccept_Click()
@@ -205,6 +220,7 @@ Private Sub cmdAccept_Click()
         .mName = txtName.Text
         .mDetails = txtDetails.Text
         .mCategoryName = cboCategories.Text
+        .mCategoryId = Me.CategoryId
     End With
     
     mDialogResult = vbOK
@@ -234,4 +250,12 @@ Private Sub SetComboBox(ParamArray varParam() As Variant)
             cboCategories.AddItem v
         End If
     Next
+End Sub
+
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Select Case UnloadMode
+        Case vbFormControlMenu 'X'
+            mDialogResult = vbCancel
+    End Select
 End Sub

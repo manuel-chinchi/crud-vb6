@@ -14,47 +14,82 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim Categories As Collection
+Dim DBConnection As clsSQLiteConnection
+Dim ArticleRepository As clsArticleRepository
+Dim i, j As Integer
 
 Private Sub Class_Initialize()
     Set Categories = New Collection
+    Set DBConnection = New clsSQLiteConnection
+    Set ArticleRepository = New clsArticleRepository
+    DBConnection.FilePath = App.Path + "\Data\database.db"
 End Sub
 
 Private Sub Class_Terminate()
     Set Categories = Nothing
+    Set DBConnection = Nothing
 End Sub
 
 Public Function GetCategories() As Collection
-    Set GetCategories = Categories
+    'NOTA: lanzar error en DBConnection si no se cargo el parametro .FilePath
+    'Set GetCategories = Categories
+    
+    Dim vCategories As Variant
+    Dim cCategories As New Collection
+    
+    DBConnection.OpenDB
+    DBConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_categories.sql")
+    vCategories = DBConnection.Cursor
+
+    Dim oCategory As New clsCategory
+    For i = 0 To UBound(vCategories)
+
+        Dim oArticle As clsArticle
+        Dim vArticles As Variant
+        Dim cArticles As New Collection
+        
+        DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SP_get_articles_of_category.sql")
+        DBConnection.AddWithValue "@CategoryId", vCategories(i, 0)
+        DBConnection.ExecuteNonQuery
+        vArticles = DBConnection.Cursor
+        
+        If Not IsEmpty(vArticles) Then
+            For j = 0 To UBound(vArticles)
+                Set oArticle = modArticleHelper.NewArticle( _
+                    vArticles(j, 0), _
+                    vArticles(j, 1), _
+                    vArticles(j, 2), _
+                    vArticles(j, 5))
+                cArticles.Add oArticle
+            Next
+        End If
+
+        Set oCategory = modCategoryHelper.NewCategory( _
+            vCategories(i, 0), _
+            vCategories(i, 1), _
+            cArticles)
+
+        cCategories.Add oCategory
+        Set cArticles = New Collection
+    Next
+    
+    DBConnection.CloseDB
+    Set GetCategories = cCategories
 End Function
 
 Public Sub CreateCategory(obj As clsCategory)
-    Categories.Add obj
+    DBConnection.OpenDB
+    DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_create_category.sql")
+    DBConnection.AddWithValue "@Name", obj.mName
+    DBConnection.AddWithValue "@CreateAt", Format(Now, "dd-mm-yyyy hh:mm:ss")
+    DBConnection.ExecuteNonQuery
+    DBConnection.CloseDB
 End Sub
 
-'Public Sub UpdateCategory(obj As clsCategory)
-'    Dim oCategory As clsCategory
-'
-'    For Each oCategory In Categories
-'        If oCategory.mId = obj.mId Then
-'            With oCategory
-'                .mName = obj.mName
-'                Set .mArticlesRelated = obj.mArticlesRelated
-'            End With
-'        End If
-'    Next
-'End Sub
-
 Public Sub DeleteCategory(Id As Integer)
-    Dim oCategory As clsCategory
-    Set oCategory = New clsCategory
-    
-    Dim iIndex As Integer
-    For Each oCategory In Categories
-        If oCategory.mId = Id Then
-            Exit For
-        End If
-        iIndex = iIndex + 1
-    Next
-    
-    Categories.Remove (iIndex + 1)
+    DBConnection.OpenDB
+    DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_delete_category.sql")
+    DBConnection.AddWithValue "@Id", Id
+    DBConnection.ExecuteNonQuery
+    DBConnection.CloseDB
 End Sub

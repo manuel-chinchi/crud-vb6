@@ -16,6 +16,8 @@ Public mId As Integer
 Public mName As String
 Public mDetails As String
 Public mCategoryName As String
+Public mCategoryId As Integer
+Public mCategory As clsCategory
 
 Public Property Get ToString() As String
     ToString = Me.mId & "," & Me.mName & "," & Me.mDetails & "," & Me.mCategoryName

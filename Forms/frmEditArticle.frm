@@ -190,12 +190,26 @@ Public Property Get DialogResult() As VbMsgBoxResult
     DialogResult = mDialogResult
 End Property
 
+Public Property Get CategoryId() As Integer
+    Dim oCategory As clsCategory
+    Dim cCategories As New Collection
+    
+    Set cCategories = CategoryRepository.GetCategories()
+    For Each oCategory In cCategories
+        If cboCategories.Text = oCategory.mName Then
+            CategoryId = oCategory.mId
+            Exit For
+        End If
+    Next oCategory
+End Property
+
 Private Sub cmdAccept_Click()
     With mArticle
         .mId = mArticle.mId
         .mName = txtName.Text
         .mDetails = txtDetails.Text
         .mCategoryName = cboCategories.Text
+        .mCategoryId = Me.CategoryId
     End With
     
     mDialogResult = vbOK
