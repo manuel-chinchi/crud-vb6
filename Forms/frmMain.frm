@@ -123,8 +123,8 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Sub DeleteAFile(filePath)
-   Dim fso
-   Set fso = CreateObject("Scripting.FileSystemObject")
-   SetAttr filePath, vbNormal
-   fso.DeleteFile (filePath)
+   'TODO El archivo 'sqlite.dll' no se puede borrar desde el programa principal
+   ' ya que el modulo cSQLiteConnection lo usa y por ende lo bloquea hasta que
+   ' se cierra. Esta es una forma rápidad de solucionar eso. Revisar a futuro.
+   Shell App.Path & "\Scripts\cleanup.bat", vbNormal
 End Sub
