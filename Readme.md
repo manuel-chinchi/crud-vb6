@@ -69,3 +69,4 @@ to deploy the application to a clean machine. I hope it helps you.
 * [Error: cr8.5 export to PDF (bendito seas)](https://www.vbforums.com/showthread.php?196385-RESOLVED-gt-Error-while-exporting-a-crystal-report)
 * [Working with Crystal Reports 8.5 and .ttx files](http://www.crystalreportsbook.com/forum/forum_posts.asp?TID=14087#:~:text=A%20Data%20Definition%20file%20is,one%20piece%20of%20sample%20data.)
 * [Trust Center locked word file](https://learn.microsoft.com/es-es/office/troubleshoot/settings/file-blocked-in-office)
+* [Use of Dictionary in VB6](https://www.codestack.net/visual-basic/data-sets/dictionary/)
