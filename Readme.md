@@ -70,3 +70,4 @@ to deploy the application to a clean machine. I hope it helps you.
 * [Working with Crystal Reports 8.5 and .ttx files](http://www.crystalreportsbook.com/forum/forum_posts.asp?TID=14087#:~:text=A%20Data%20Definition%20file%20is,one%20piece%20of%20sample%20data.)
 * [Trust Center locked word file](https://learn.microsoft.com/es-es/office/troubleshoot/settings/file-blocked-in-office)
 * [Use of Dictionary in VB6](https://www.codestack.net/visual-basic/data-sets/dictionary/)
+* [Use of dictionary in VBA/VB6](https://vba846.wordpress.com/objeto-dictionary-para-vba/)
