@@ -177,6 +177,7 @@ Dim mArticle As clsArticle
 Dim i As Integer
 Dim mDialogResult As VbMsgBoxResult
 Public CategoryRepository As clsCategoryRepository
+Dim mComboBoxUIManager As New clsComboBoxUIManager
 
 Public Property Get Article() As clsArticle
     Set Article = mArticle
@@ -212,6 +213,8 @@ Private Sub Form_Load()
     End If
     
     cboCategories.ListIndex = 0
+    
+    mComboBoxUIManager.Initialize cboCategories
 End Sub
 
 Private Sub cmdAccept_Click()

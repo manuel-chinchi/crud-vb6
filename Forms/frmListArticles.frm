@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form frmListArticles 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "ListArticles"
@@ -155,6 +155,8 @@ Option Explicit
 
 Dim i As Integer
 Public ArticleRepository As clsArticleRepository
+Dim oListViewUIManager As New clsListViewUIManager
+
 
 Private Sub Form_Load()
     SetHeader " ", "Id", "Name", "Details", "Category"
@@ -162,6 +164,8 @@ Private Sub Form_Load()
     SetDataSource ArticleRepository.GetArticles()
     cmdEdit.Enabled = False
     cmdDelete.Enabled = False
+    
+    oListViewUIManager.Initialize lvwArticles
 End Sub
 
 Private Sub cmdAdd_Click()
@@ -250,6 +254,7 @@ Private Sub cmdShowAll_Click()
 End Sub
 
 Private Sub lvwArticles_Click()
+    'Debug.Print Now
     Dim cArray As Collection
     Set cArray = GetIdsOfSelectedArticles
     

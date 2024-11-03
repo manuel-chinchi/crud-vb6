@@ -89,8 +89,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Declare Function CopyFile Lib "kernel32" Alias "CopyFileA" (ByVal lpExistingFileName As String, ByVal lpNewFileName As String, ByVal bFailIfExists As Long) As Long
-Private Declare Function DeleteFile Lib "kernel32" Alias "DeleteFileA" (ByVal lpFileName As String) As Long
+Private mDependencyManager As New clsDependencyManager
 
 Private Sub cmdArticles_Click()
     frmListArticles.Show vbModal
@@ -104,11 +103,12 @@ Private Sub cmdReports_Click()
     frmReports.Show vbModal
 End Sub
 
+Private Sub Form_Initialize()
+    mDependencyManager.Initialize Me
+End Sub
+
 Private Sub Form_Load()
     InitializeRepositories
-    
-    'FileCopy App.Path & "\Dependences\SQLite\sqlite.dll", App.Path & "\sqlite.dll"
-    CopyFile App.Path & "\Dependences\SQLite\sqlite.dll", App.Path & "\sqlite.dll", False
 End Sub
 
 Private Sub InitializeRepositories()
@@ -116,15 +116,4 @@ Private Sub InitializeRepositories()
     Set frmListArticles.ArticleRepository = modSingletonRepository.GetArticleRepository()
     Set frmListCategories.CategoryRepository = modSingletonRepository.GetCategoryRepository()
     Set frmEditArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-End Sub
-
-Private Sub Form_Unload(Cancel As Integer)
-    DeleteAFile App.Path & "\sqlite.dll"
-End Sub
-
-Sub DeleteAFile(filePath)
-   'TODO El archivo 'sqlite.dll' no se puede borrar desde el programa principal
-   ' ya que el modulo cSQLiteConnection lo usa y por ende lo bloquea hasta que
-   ' se cierra. Esta es una forma rápidad de solucionar eso. Revisar a futuro.
-   Shell App.Path & "\Scripts\cleanup.bat", vbNormal
 End Sub

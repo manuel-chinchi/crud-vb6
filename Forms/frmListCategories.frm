@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form frmListCategories 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "ListCategories"
@@ -88,12 +88,15 @@ Option Explicit
 
 Dim i As Integer
 Public CategoryRepository As clsCategoryRepository
+Dim oListViewUIManager As New clsListViewUIManager
 
 Private Sub Form_Load()
     SetHeader " ", "Id", "Name", "Articles"
     SetHeaderWidth 300, 900, 1800, 1200
     SetDataSource CategoryRepository.GetCategories()
     cmdDelete.Enabled = False
+    
+    oListViewUIManager.Initialize lvwCategories
 End Sub
 
 Private Sub cmdAdd_Click()
