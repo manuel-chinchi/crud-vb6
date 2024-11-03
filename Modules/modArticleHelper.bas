@@ -1,6 +1,6 @@
 Attribute VB_Name = "modArticleHelper"
 'TODO implementar algo mas flexible para parsear los objetos. Revisar el obj
-' Dictionary
+' Dictionary si puede servir
 
 Public Function NewArticle(ParamArray varParams() As Variant) As Object
     Dim Article As clsArticle

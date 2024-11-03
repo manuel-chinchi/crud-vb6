@@ -214,13 +214,6 @@ Private Sub Form_Load()
     cboCategories.ListIndex = 0
     
     mComboBoxUIManager.Initialize cboCategories
-    
-    
-    Dim oDict As Dictionary
-    Set oDict = New Dictionary
-    
-    If oDict Is Nothing Then
-    End If
 End Sub
 
 Private Sub cmdAccept_Click()
