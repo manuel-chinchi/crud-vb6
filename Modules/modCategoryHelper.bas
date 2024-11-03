@@ -1,4 +1,7 @@
 Attribute VB_Name = "modCategoryHelper"
+'TODO implementar algo mas flexible para parsear los objetos. Revisar el obj
+' Dictionary si puede servir
+
 Option Explicit
 
 Dim i As Integer
@@ -10,7 +13,10 @@ Public Function NewCategory(ParamArray varParam() As Variant) As Object
     With Category
         .mId = varParam(0)
         .mName = varParam(1)
-        Set .mArticlesRelated = varParam(2)
+        .mStatus = CBool(varParam(2))
+        Set .mArticles = varParam(3)
+        .mCreateAt = CDate(varParam(4))
+        .mUpateAt = CDate(varParam(5))
     End With
     
     Set NewCategory = Category
@@ -44,13 +50,13 @@ Public Function ConvertToRecordset(arr As Collection) As ADODB.Recordset
         rs.AddNew
         rs.Fields("mId").Value = obj.mId
         rs.Fields("mName").Value = obj.mName
-        If obj.mArticlesRelated Is Nothing Then
+        If obj.mArticles Is Nothing Then
             iArticlesCount = 0
         Else
-            iArticlesCount = obj.mArticlesRelated.Count
+            iArticlesCount = obj.mArticles.Count
         End If
-        'If obj.mArticlesRelated Is Nothing Then
-        '    Set rs.Fields("mArticlesCount").Value = obj.mArticlesRelated.Count
+        'If obj.mArticles Is Nothing Then
+        '    Set rs.Fields("mArticlesCount").Value = obj.mArticles.Count
         'Else
         '    rs.Fields("mArticlesCount").Value = 0
         'End If

@@ -87,10 +87,12 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Public CategoryRepository As clsCategoryRepository
+Dim CategoryRepository As clsCategoryRepository
 Dim oListViewUIManager As New clsListViewUIManager
 
 Private Sub Form_Load()
+    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
+    
     SetHeader " ", "Id", "Name", "Articles"
     SetHeaderWidth 300, 900, 1800, 1200
     SetDataSource CategoryRepository.GetCategories()
@@ -158,8 +160,8 @@ Private Sub SetDataSource(arr As Collection)
         Set li = lvwCategories.ListItems.Add(, , "")
         li.SubItems(1) = objCategory.mId
         li.SubItems(2) = objCategory.mName
-        If Not objCategory.mArticlesRelated Is Nothing Then
-            li.SubItems(3) = objCategory.mArticlesRelated.Count
+        If Not objCategory.mArticles Is Nothing Then
+            li.SubItems(3) = objCategory.mArticles.Count
         Else
             li.SubItems(3) = 0
         End If

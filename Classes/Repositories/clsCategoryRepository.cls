@@ -22,7 +22,7 @@ Private Sub Class_Initialize()
     Set Categories = New Collection
     Set DBConnection = New clsSQLiteConnection
     Set ArticleRepository = New clsArticleRepository
-    DBConnection.FilePath = App.Path + "\Data\database.db"
+    DBConnection.filePath = App.Path + "\Data\database.db"
 End Sub
 
 Private Sub Class_Terminate()
@@ -48,7 +48,7 @@ Public Function GetCategories() As Collection
         Dim vArticles As Variant
         Dim cArticles As New Collection
         
-        DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SP_get_articles_of_category.sql")
+        DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_articles_of_category.sql")
         DBConnection.AddWithValue "@CategoryId", vCategories(i, 0)
         DBConnection.ExecuteNonQuery
         vArticles = DBConnection.Cursor
@@ -59,7 +59,11 @@ Public Function GetCategories() As Collection
                     vArticles(j, 0), _
                     vArticles(j, 1), _
                     vArticles(j, 2), _
-                    vArticles(j, 5))
+                    vArticles(j, 3), _
+                    vArticles(j, 4), _
+                    vArticles(j, 5), _
+                    Nothing _
+                    )
                 cArticles.Add oArticle
             Next
         End If
@@ -67,8 +71,12 @@ Public Function GetCategories() As Collection
         Set oCategory = modCategoryHelper.NewCategory( _
             vCategories(i, 0), _
             vCategories(i, 1), _
-            cArticles)
-
+            vCategories(i, 2), _
+            cArticles, _
+            vCategories(i, 3), _
+            vCategories(i, 4) _
+            )
+        
         cCategories.Add oCategory
         Set cArticles = New Collection
     Next

@@ -292,8 +292,13 @@ ErrorEmptyCursor:
 End Sub
 
 Public Sub ExecuteNonQuery(Optional fIncludeHeaders As Boolean = False)
+On Error GoTo CatchError
+    If m_lHandle = -1 Then
+        Err.Raise vbObjectError + 513, "ExecuteNonQuery", "value of m_lHandle is INVALID. Check that the connection to the database is open"
+    End If
+
     m_vCursor = sqlite_get_table(m_lHandle, m_sQuery, m_sError)
-    
+
 On Error GoTo ErrorEmptyCursor
 
     ColumnLimit = UBound(Cursor, 2)
@@ -314,6 +319,9 @@ ErrorEmptyCursor:
     Columns = -1
     Headers = Empty
     Cursor = Empty
+    Exit Sub
+CatchError:
+    MsgBox "Error #" & Err.Number & ": '" & Err.Description & "' from '" & Err.Source & "'"
 End Sub
 
 Public Sub CloseDB()

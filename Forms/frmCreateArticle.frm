@@ -173,10 +173,9 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim mArticle As clsArticle
-Dim i As Integer
+Dim mArticle As New clsArticle
 Dim mDialogResult As VbMsgBoxResult
-Public CategoryRepository As clsCategoryRepository
+Dim CategoryRepository As clsCategoryRepository
 Dim mComboBoxUIManager As New clsComboBoxUIManager
 
 Public Property Get Article() As clsArticle
@@ -201,13 +200,13 @@ Public Property Get CategoryId() As Integer
 End Property
 
 Private Sub Form_Load()
-    Set mArticle = New clsArticle
-    
+    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
+
     If CategoryRepository.GetCategories().Count <> 0 Then
-        Dim arr() As Variant
+        Dim vCategories() As Variant
         
-        arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
-        SetComboBox arr
+        vCategories = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
+        SetComboBox vCategories
     Else
         cboCategories.Enabled = False
     End If
@@ -215,6 +214,13 @@ Private Sub Form_Load()
     cboCategories.ListIndex = 0
     
     mComboBoxUIManager.Initialize cboCategories
+    
+    
+    Dim oDict As Dictionary
+    Set oDict = New Dictionary
+    
+    If oDict Is Nothing Then
+    End If
 End Sub
 
 Private Sub cmdAccept_Click()
@@ -222,8 +228,13 @@ Private Sub cmdAccept_Click()
         .mId = 0
         .mName = txtName.Text
         .mDetails = txtDetails.Text
-        .mCategoryName = cboCategories.Text
-        .mCategoryId = Me.CategoryId
+        '.mCategoryName = cboCategories.Text
+        '.mCategoryId = Me.CategoryId
+        If .mCategory Is Nothing Then
+            Set .mCategory = New clsCategory
+        End If
+        .mCategory.mName = cboCategories.Text
+        .mCategory.mId = Me.CategoryId
     End With
     
     mDialogResult = vbOK
@@ -238,10 +249,7 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub SetComboBox(ParamArray varParam() As Variant)
-    'For i = 0 To UBound(varParam)
-    '    cboCategories.AddItem varParam(i)
-    'Next
-    
+    Dim i
     Dim v As Variant
     
     For Each v In varParam
@@ -254,7 +262,6 @@ Private Sub SetComboBox(ParamArray varParam() As Variant)
         End If
     Next
 End Sub
-
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Select Case UnloadMode

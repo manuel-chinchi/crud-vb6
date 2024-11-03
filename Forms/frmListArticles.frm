@@ -154,11 +154,13 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Public ArticleRepository As clsArticleRepository
+Dim ArticleRepository As clsArticleRepository
 Dim oListViewUIManager As New clsListViewUIManager
 
 
 Private Sub Form_Load()
+    Set ArticleRepository = modSingletonRepository.GetArticleRepository()
+
     SetHeader " ", "Id", "Name", "Details", "Category"
     SetHeaderWidth 300, 900, 1500, 1800, 1200
     SetDataSource ArticleRepository.GetArticles()
@@ -192,7 +194,11 @@ Private Sub cmdEdit_Click()
                 .mId = li.SubItems(1)
                 .mName = li.SubItems(2)
                 .mDetails = li.SubItems(3)
-                .mCategoryName = li.SubItems(4)
+                '.mCategoryName = li.SubItems(4)
+                If .mCategory Is Nothing Then
+                    Set .mCategory = New clsCategory
+                End If
+                .mCategory.mName = li.SubItems(4)
             End With
         End If
     Next
@@ -305,7 +311,8 @@ Private Sub SetDataSource(arr As Collection)
         li.SubItems(1) = objArticle.mId
         li.SubItems(2) = objArticle.mName
         li.SubItems(3) = objArticle.mDetails
-        li.SubItems(4) = objArticle.mCategoryName
+        'li.SubItems(4) = objArticle.mCategoryName
+        li.SubItems(4) = objArticle.mCategory.mName
     Next
 End Sub
 

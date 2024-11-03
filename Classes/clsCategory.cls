@@ -14,11 +14,14 @@ Attribute VB_Exposed = False
 
 Public mId As Integer
 Public mName As String
-Public mArticlesRelated As Collection
+Public mStatus As Boolean
+Public mCreateAt As Date
+Public mUpateAt As Date
+Public mArticles As Collection
 
 Public Property Get ToString() As String
-    If Not mArticlesRelated Is Nothing Then
-        ToString = mId & "," & mName & "," & Str(mArticlesRelated.Count)
+    If Not mArticles Is Nothing Then
+        ToString = mId & "," & mName & "," & Str(mArticles.Count)
     Else
         ToString = mId & "," & mName & "," & 0
     End If

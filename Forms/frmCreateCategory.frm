@@ -107,7 +107,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim mCategory As clsCategory
-Dim i As Integer
 Dim mDialogResult As VbMsgBoxResult
 
 Public Property Get Category() As clsCategory

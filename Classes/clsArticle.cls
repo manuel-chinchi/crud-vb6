@@ -15,9 +15,11 @@ Attribute VB_Exposed = False
 Public mId As Integer
 Public mName As String
 Public mDetails As String
-Public mCategoryName As String
-Public mCategoryId As Integer
+'Public mCategoryName As String
+'Public mCategoryId As Integer
 Public mCategory As clsCategory
+Public mCreateAt As Date
+Public mUpdateAt As Date
 
 Public Property Get ToString() As String
     ToString = Me.mId & "," & Me.mName & "," & Me.mDetails & "," & Me.mCategoryName

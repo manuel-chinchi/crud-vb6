@@ -1,4 +1,7 @@
 Attribute VB_Name = "modArticleHelper"
+'TODO implementar algo mas flexible para parsear los objetos. Revisar el obj
+' Dictionary
+
 Public Function NewArticle(ParamArray varParams() As Variant) As Object
     Dim Article As clsArticle
     Set Article = New clsArticle
@@ -7,7 +10,14 @@ Public Function NewArticle(ParamArray varParams() As Variant) As Object
         .mId = varParams(0)
         .mName = varParams(1)
         .mDetails = varParams(2)
-        .mCategoryName = varParams(3)
+        .mCreateAt = CDate(varParams(3))
+        .mUpdateAt = CDate(varParams(4))
+        '.mCategoryName = varParams(5)
+        If .mCategory Is Nothing Then
+            Set .mCategory = New clsCategory
+        End If
+        Set .mCategory = varParams(6)
+        '.mCategoryId = varParams(7)
     End With
     
     Set NewArticle = Article
@@ -30,7 +40,8 @@ Public Function ConvertToRecordset(arr As Collection) As ADODB.Recordset
         rs.Fields("mId").Value = obj.mId
         rs.Fields("mName").Value = obj.mName
         rs.Fields("mDetails").Value = obj.mDetails
-        rs.Fields("mCategoryName").Value = obj.mCategoryName
+        'rs.Fields("mCategoryName").Value = obj.mCategoryName
+        rs.Fields("mCategoryName").Value = obj.mCategory.mName
         rs.Update
     Next obj
     

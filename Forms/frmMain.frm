@@ -107,13 +107,3 @@ Private Sub Form_Initialize()
     mDependencyManager.Initialize Me
 End Sub
 
-Private Sub Form_Load()
-    InitializeRepositories
-End Sub
-
-Private Sub InitializeRepositories()
-    Set frmCreateArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-    Set frmListArticles.ArticleRepository = modSingletonRepository.GetArticleRepository()
-    Set frmListCategories.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-    Set frmEditArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-End Sub
