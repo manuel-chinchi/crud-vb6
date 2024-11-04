@@ -87,26 +87,26 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Dim CategoryRepository As clsCategoryRepository
-Dim oListViewUIManager As New clsListViewUIManager
+Dim mCategoryRepository As clsCategoryRepository
+Dim mListViewUIManager As New clsListViewUIManager
 
 Private Sub Form_Load()
-    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
+    Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
     
     SetHeader " ", "Id", "Name", "Articles"
     SetHeaderWidth 300, 900, 1800, 1200
-    SetDataSource CategoryRepository.GetCategories()
+    SetDataSource mCategoryRepository.GetCategories()
     cmdDelete.Enabled = False
     
-    oListViewUIManager.Initialize lvwCategories
+    mListViewUIManager.Initialize lvwCategories
 End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateCategory.Show vbModal
     
     If frmCreateCategory.DialogResult = vbOK Then
-        CategoryRepository.CreateCategory frmCreateCategory.Category
-        SetDataSource CategoryRepository.GetCategories()
+        mCategoryRepository.CreateCategory frmCreateCategory.Category
+        SetDataSource mCategoryRepository.GetCategories()
     End If
 End Sub
 
@@ -121,10 +121,10 @@ Private Sub cmdDelete_Click()
         If AnswerResult = vbNo Then Exit Sub
     
         For Each iId In arrIdsCategoriesSelected
-            CategoryRepository.DeleteCategory (Int(iId))
+            mCategoryRepository.DeleteCategory (Int(iId))
         Next
             
-        SetDataSource CategoryRepository.GetCategories()
+        SetDataSource mCategoryRepository.GetCategories()
     End If
 End Sub
 
@@ -152,17 +152,16 @@ End Sub
 
 Private Sub SetDataSource(arr As Collection)
     Dim li As ListItem
-    Dim objCategory As clsCategory
+    Dim oCategory As clsCategory
 
     lvwCategories.ListItems.Clear
     
-    For Each objCategory In arr
-        Debug.Print objCategory.ToString
+    For Each oCategory In arr
         Set li = lvwCategories.ListItems.Add(, , "")
-        li.SubItems(1) = objCategory.mId
-        li.SubItems(2) = objCategory.mName
-        If Not objCategory.mArticles Is Nothing Then
-            li.SubItems(3) = objCategory.mArticles.Count
+        li.SubItems(1) = oCategory.mId
+        li.SubItems(2) = oCategory.mName
+        If Not oCategory.mArticles Is Nothing Then
+            li.SubItems(3) = oCategory.mArticles.Count
         Else
             li.SubItems(3) = 0
         End If

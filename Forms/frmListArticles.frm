@@ -154,28 +154,28 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Dim ArticleRepository As clsArticleRepository
-Dim oListViewUIManager As New clsListViewUIManager
+Dim mArticleRepository As clsArticleRepository
+Dim mListViewUIManager As New clsListViewUIManager
 
 
 Private Sub Form_Load()
-    Set ArticleRepository = modSingletonRepository.GetArticleRepository()
+    Set mArticleRepository = modSingletonRepository.GetArticleRepository()
 
     SetHeader " ", "Id", "Name", "Details", "Category"
     SetHeaderWidth 300, 900, 1500, 1800, 1200
-    SetDataSource ArticleRepository.GetArticles()
+    SetDataSource mArticleRepository.GetArticles()
     cmdEdit.Enabled = False
     cmdDelete.Enabled = False
     
-    oListViewUIManager.Initialize lvwArticles
+    mListViewUIManager.Initialize lvwArticles
 End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateArticle.Show vbModal
     
     If frmCreateArticle.DialogResult = vbOK Then
-        ArticleRepository.CreateArticle frmCreateArticle.Article
-        SetDataSource ArticleRepository.GetArticles()
+        mArticleRepository.CreateArticle frmCreateArticle.Article
+        SetDataSource mArticleRepository.GetArticles()
     End If
 End Sub
 
@@ -207,8 +207,8 @@ Private Sub cmdEdit_Click()
         frmEditArticle.Show vbModal
     
         If frmEditArticle.DialogResult = vbOK Then
-            ArticleRepository.UpdateArticle frmEditArticle.Article
-            SetDataSource ArticleRepository.GetArticles()
+            mArticleRepository.UpdateArticle frmEditArticle.Article
+            SetDataSource mArticleRepository.GetArticles()
             cmdEdit.Enabled = False
         End If
     Else
@@ -227,16 +227,16 @@ Private Sub cmdDelete_Click()
     
         Dim iId As Variant
         For Each iId In arrIdsSelectedArticles
-            ArticleRepository.DeleteArticle (Int(iId))
+            mArticleRepository.DeleteArticle (Int(iId))
         Next
         
-        SetDataSource ArticleRepository.GetArticles()
+        SetDataSource mArticleRepository.GetArticles()
     End If
 End Sub
 
 Private Sub cmdSearch_Click()
     Dim arrArticlesFilter As Collection
-    Set arrArticlesFilter = ArticleRepository.SearchArticle(txtSearch.Text)
+    Set arrArticlesFilter = mArticleRepository.SearchArticle(txtSearch.Text)
     
     If Not arrArticlesFilter Is Nothing Then
         SetDataSource arrArticlesFilter
@@ -253,7 +253,7 @@ Private Sub txtSearch_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub cmdShowAll_Click()
-    SetDataSource ArticleRepository.GetArticles()
+    SetDataSource mArticleRepository.GetArticles()
     cmdEdit.Enabled = False
     cmdDelete.Enabled = False
 End Sub
@@ -300,17 +300,16 @@ End Sub
 
 Private Sub SetDataSource(arr As Collection)
     Dim li As ListItem
-    Dim objArticle As clsArticle
+    Dim oArticle As clsArticle
 
     lvwArticles.ListItems.Clear
     
-    For Each objArticle In arr
-        Debug.Print objArticle.ToString
+    For Each oArticle In arr
         Set li = lvwArticles.ListItems.Add(, , "")
-        li.SubItems(1) = objArticle.mId
-        li.SubItems(2) = objArticle.mName
-        li.SubItems(3) = objArticle.mDetails
-        li.SubItems(4) = objArticle.mCategory.mName
+        li.SubItems(1) = oArticle.mId
+        li.SubItems(2) = oArticle.mName
+        li.SubItems(3) = oArticle.mDetails
+        li.SubItems(4) = oArticle.mCategory.mName
     Next
 End Sub
 

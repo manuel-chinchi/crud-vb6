@@ -13,44 +13,44 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Articles As Collection
+Dim mArticles As Collection
 Dim DBConnection As clsSQLiteConnection
 Dim PathDB As String
 Dim i As Integer
 
 Private Sub Class_Initialize() 'ctor
-    Set Articles = New Collection
+    Set mArticles = New Collection
     Set DBConnection = New clsSQLiteConnection
     DBConnection.filePath = App.Path & "\Data\database.db"
 End Sub
 
 Private Sub Class_Terminate()
-    Set Articles = Nothing
+    Set mArticles = Nothing
     Set DBConnection = Nothing
 End Sub
 
 Public Function GetArticles() As Collection
-    Dim vArticles As Variant
+    Dim vmArticles As Variant
     
     DBConnection.OpenDB
     Dim sQuery As String
     sQuery = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_articles.sql")
     DBConnection.ExecuteQuery sQuery
-    vArticles = DBConnection.Cursor
+    vmArticles = DBConnection.Cursor
     
-    If IsEmpty(vArticles) Then
+    If IsEmpty(vmArticles) Then
         Set GetArticles = Nothing
     Else
         Dim oArticle As New clsArticle
-        Dim cArticles As New Collection
+        Dim cmArticles As New Collection
         
-        For i = 0 To UBound(vArticles)
+        For i = 0 To UBound(vmArticles)
             
             Dim vCategory As Variant
             Dim oCategory As clsCategory
             
             DBConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_category_of_article.sql")
-            DBConnection.AddWithValue "@CategoryId", vArticles(i, 6)
+            DBConnection.AddWithValue "@CategoryId", vmArticles(i, 6)
             DBConnection.ExecuteNonQuery
             vCategory = DBConnection.Cursor
             
@@ -64,21 +64,21 @@ Public Function GetArticles() As Collection
             )
         
             Set oArticle = modArticleHelper.NewArticle( _
-                    vArticles(i, 0), _
-                    vArticles(i, 1), _
-                    vArticles(i, 2), _
-                    vArticles(i, 3), _
-                    vArticles(i, 4), _
-                    vArticles(i, 5), _
+                    vmArticles(i, 0), _
+                    vmArticles(i, 1), _
+                    vmArticles(i, 2), _
+                    vmArticles(i, 3), _
+                    vmArticles(i, 4), _
+                    vmArticles(i, 5), _
                     oCategory, _
-                    vArticles(i, 6) _
+                    vmArticles(i, 6) _
                     )
-            cArticles.Add oArticle
+            cmArticles.Add oArticle
         Next
     End If
     
     DBConnection.CloseDB
-    Set GetArticles = cArticles
+    Set GetArticles = cmArticles
 End Function
 
 Public Sub CreateArticle(obj As clsArticle)
@@ -117,27 +117,27 @@ Public Sub DeleteArticle(Id As Long)
 End Sub
 
 Public Function SearchArticle(sSearch As String) As Collection
-    Dim vArticles As Variant
+    Dim vmArticles As Variant
     
     DBConnection.OpenDB
     DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_search_article.sql")
     DBConnection.AddWithValue "@Search", sSearch
     DBConnection.ExecuteNonQuery
-    vArticles = DBConnection.Cursor
+    vmArticles = DBConnection.Cursor
 
-    If IsEmpty(vArticles) Then
+    If IsEmpty(vmArticles) Then
         Set SearchArticle = Nothing
     Else
         Dim oArticle As New clsArticle
-        Dim cArticles As New Collection
+        Dim cmArticles As New Collection
         
-        For i = 0 To UBound(vArticles)
+        For i = 0 To UBound(vmArticles)
         
             Dim vCategory As Variant
             Dim oCategory As clsCategory
             
             DBConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_category_of_article.sql")
-            DBConnection.AddWithValue "@CategoryId", vArticles(i, 6)
+            DBConnection.AddWithValue "@CategoryId", vmArticles(i, 6)
             DBConnection.ExecuteNonQuery
             vCategory = DBConnection.Cursor
             
@@ -151,23 +151,23 @@ Public Function SearchArticle(sSearch As String) As Collection
             )
         
             Set oArticle = modArticleHelper.NewArticle( _
-                    vArticles(i, 0), _
-                    vArticles(i, 1), _
-                    vArticles(i, 2), _
-                    vArticles(i, 3), _
-                    vArticles(i, 4), _
-                    vArticles(i, 5), _
+                    vmArticles(i, 0), _
+                    vmArticles(i, 1), _
+                    vmArticles(i, 2), _
+                    vmArticles(i, 3), _
+                    vmArticles(i, 4), _
+                    vmArticles(i, 5), _
                     oCategory, _
-                    vArticles(i, 6) _
+                    vmArticles(i, 6) _
                 )
                     
-            cArticles.Add oArticle
+            cmArticles.Add oArticle
         Next
     End If
     
     DBConnection.CloseDB
     
-    Set SearchArticle = cArticles
+    Set SearchArticle = cmArticles
 End Function
 
 Function GetDateTimeAsString() As String

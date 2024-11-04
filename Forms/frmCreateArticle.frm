@@ -175,7 +175,7 @@ Option Explicit
 
 Dim mArticle As New clsArticle
 Dim mDialogResult As VbMsgBoxResult
-Dim CategoryRepository As clsCategoryRepository
+Dim mCategoryRepository As clsCategoryRepository
 Dim mComboBoxUIManager As New clsComboBoxUIManager
 
 Public Property Get Article() As clsArticle
@@ -190,7 +190,7 @@ Public Property Get CategoryId() As Integer
     Dim oCategory As clsCategory
     Dim cCategories As New Collection
     
-    Set cCategories = CategoryRepository.GetCategories()
+    Set cCategories = mCategoryRepository.GetCategories()
     For Each oCategory In cCategories
         If cboCategories.Text = oCategory.mName Then
             CategoryId = oCategory.mId
@@ -200,12 +200,12 @@ Public Property Get CategoryId() As Integer
 End Property
 
 Private Sub Form_Load()
-    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
+    Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
 
-    If CategoryRepository.GetCategories().Count <> 0 Then
+    If mCategoryRepository.GetCategories().Count <> 0 Then
         Dim vCategories() As Variant
         
-        vCategories = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
+        vCategories = modCategoryHelper.ConvertToVariant(mCategoryRepository.GetCategories())
         SetComboBox vCategories
     Else
         cboCategories.Enabled = False

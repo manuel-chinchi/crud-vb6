@@ -174,10 +174,10 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim mArticle As clsArticle
-Dim i As Integer
 Dim mDialogResult As VbMsgBoxResult
-Dim CategoryRepository As clsCategoryRepository
-Dim oComboBoxUIManager As New clsComboBoxUIManager
+Dim mCategoryRepository As clsCategoryRepository
+Dim mComboBoxUIManager As New clsComboBoxUIManager
+Dim i
 
 Public Property Set Article(obj As clsArticle)
     Set mArticle = obj
@@ -195,7 +195,7 @@ Public Property Get CategoryId() As Integer
     Dim oCategory As clsCategory
     Dim cCategories As New Collection
     
-    Set cCategories = CategoryRepository.GetCategories()
+    Set cCategories = mCategoryRepository.GetCategories()
     For Each oCategory In cCategories
         If cboCategories.Text = oCategory.mName Then
             CategoryId = oCategory.mId
@@ -223,22 +223,22 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub Form_Load()
-    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
+    Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
 
     txtName.Text = mArticle.mName
     txtDetails.Text = mArticle.mDetails
     cboCategories.Text = mArticle.mCategory.mName
     
-    If CategoryRepository.GetCategories().Count <> 0 Then
+    If mCategoryRepository.GetCategories().Count <> 0 Then
         Dim arr() As Variant
         
-        arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
+        arr = modCategoryHelper.ConvertToVariant(mCategoryRepository.GetCategories())
         SetComboBox arr
     Else
         cboCategories.Enabled = False
     End If
     
-    oComboBoxUIManager.Initialize cboCategories
+    mComboBoxUIManager.Initialize cboCategories
 End Sub
 
 Private Sub SetComboBox(ParamArray varParam() As Variant)
