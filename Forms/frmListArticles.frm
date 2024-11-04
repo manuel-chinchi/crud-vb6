@@ -194,7 +194,6 @@ Private Sub cmdEdit_Click()
                 .mId = li.SubItems(1)
                 .mName = li.SubItems(2)
                 .mDetails = li.SubItems(3)
-                '.mCategoryName = li.SubItems(4)
                 If .mCategory Is Nothing Then
                     Set .mCategory = New clsCategory
                 End If
@@ -260,7 +259,6 @@ Private Sub cmdShowAll_Click()
 End Sub
 
 Private Sub lvwArticles_Click()
-    'Debug.Print Now
     Dim cArray As Collection
     Set cArray = GetIdsOfSelectedArticles
     
@@ -307,11 +305,11 @@ Private Sub SetDataSource(arr As Collection)
     lvwArticles.ListItems.Clear
     
     For Each objArticle In arr
+        Debug.Print objArticle.ToString
         Set li = lvwArticles.ListItems.Add(, , "")
         li.SubItems(1) = objArticle.mId
         li.SubItems(2) = objArticle.mName
         li.SubItems(3) = objArticle.mDetails
-        'li.SubItems(4) = objArticle.mCategoryName
         li.SubItems(4) = objArticle.mCategory.mName
     Next
 End Sub

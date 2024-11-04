@@ -12,12 +12,10 @@ Public Function NewArticle(ParamArray varParams() As Variant) As Object
         .mDetails = varParams(2)
         .mCreateAt = CDate(varParams(3))
         .mUpdateAt = CDate(varParams(4))
-        '.mCategoryName = varParams(5)
         If .mCategory Is Nothing Then
             Set .mCategory = New clsCategory
         End If
         Set .mCategory = varParams(6)
-        '.mCategoryId = varParams(7)
     End With
     
     Set NewArticle = Article
@@ -40,7 +38,6 @@ Public Function ConvertToRecordset(arr As Collection) As ADODB.Recordset
         rs.Fields("mId").Value = obj.mId
         rs.Fields("mName").Value = obj.mName
         rs.Fields("mDetails").Value = obj.mDetails
-        'rs.Fields("mCategoryName").Value = obj.mCategoryName
         rs.Fields("mCategoryName").Value = obj.mCategory.mName
         rs.Update
     Next obj

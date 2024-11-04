@@ -25,14 +25,11 @@ Dim iFile
 Function IsDllInUse(ByVal filePath As String) As Boolean
     Dim hFile As Long
 
-    ' Intentar abrir el archivo en modo exclusivo
     hFile = CreateFile(filePath, GENERIC_READ Or GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0)
     
     If hFile = INVALID_HANDLE_VALUE Then
-        ' No se pudo abrir el archivo, está en uso
         IsDllInUse = True
     Else
-        ' Se pudo abrir el archivo, no está en uso
         IsDllInUse = False
         CloseHandle hFile
     End If

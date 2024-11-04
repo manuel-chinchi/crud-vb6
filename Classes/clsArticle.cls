@@ -15,12 +15,16 @@ Attribute VB_Exposed = False
 Public mId As Integer
 Public mName As String
 Public mDetails As String
-'Public mCategoryName As String
-'Public mCategoryId As Integer
 Public mCategory As clsCategory
 Public mCreateAt As Date
 Public mUpdateAt As Date
 
-Public Property Get ToString() As String
-    ToString = Me.mId & "," & Me.mName & "," & Me.mDetails & "," & Me.mCategoryName
-End Property
+Public Function ToString() As String
+    ToString = _
+        "<Id=" & Me.mId & _
+        ", Name=" & Me.mName & _
+        ", Details=" & Me.mDetails & _
+        ", CreateAt=" & Me.mCreateAt & _
+        ", UpdateAt=" & Me.mUpdateAt & _
+        ", Category= <mId=" & Me.mCategory.mId & ">>"
+End Function

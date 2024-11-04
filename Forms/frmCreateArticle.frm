@@ -221,8 +221,6 @@ Private Sub cmdAccept_Click()
         .mId = 0
         .mName = txtName.Text
         .mDetails = txtDetails.Text
-        '.mCategoryName = cboCategories.Text
-        '.mCategoryId = Me.CategoryId
         If .mCategory Is Nothing Then
             Set .mCategory = New clsCategory
         End If

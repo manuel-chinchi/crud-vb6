@@ -157,6 +157,7 @@ Private Sub SetDataSource(arr As Collection)
     lvwCategories.ListItems.Clear
     
     For Each objCategory In arr
+        Debug.Print objCategory.ToString
         Set li = lvwCategories.ListItems.Add(, , "")
         li.SubItems(1) = objCategory.mId
         li.SubItems(2) = objCategory.mName

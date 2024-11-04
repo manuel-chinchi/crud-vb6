@@ -19,10 +19,12 @@ Public mCreateAt As Date
 Public mUpateAt As Date
 Public mArticles As Collection
 
-Public Property Get ToString() As String
-    If Not mArticles Is Nothing Then
-        ToString = mId & "," & mName & "," & Str(mArticles.Count)
-    Else
-        ToString = mId & "," & mName & "," & 0
-    End If
-End Property
+Public Function ToString() As String
+    ToString = _
+        "<Id=" & Me.mId & _
+        ", Name=" & Me.mName & _
+        ", Status=" & Me.mStatus & _
+        ", CreateAt=" & Me.mCreateAt & _
+        ", UpdateA=" & Me.mUpateAt & _
+        ", Articles=<COUNT(" & Me.mArticles.Count & ")>>"
+End Function

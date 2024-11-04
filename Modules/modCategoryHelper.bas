@@ -55,11 +55,6 @@ Public Function ConvertToRecordset(arr As Collection) As ADODB.Recordset
         Else
             iArticlesCount = obj.mArticles.Count
         End If
-        'If obj.mArticles Is Nothing Then
-        '    Set rs.Fields("mArticlesCount").Value = obj.mArticles.Count
-        'Else
-        '    rs.Fields("mArticlesCount").Value = 0
-        'End If
         rs.Fields("mArticlesCount").Value = iArticlesCount
         rs.Update
     Next obj

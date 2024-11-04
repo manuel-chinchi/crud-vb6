@@ -209,8 +209,6 @@ Private Sub cmdAccept_Click()
         .mId = mArticle.mId
         .mName = txtName.Text
         .mDetails = txtDetails.Text
-        '.mCategoryName = cboCategories.Text
-        '.mCategoryId = Me.CategoryId
         .mCategory.mName = cboCategories.Text
         .mCategory.mId = Me.CategoryId
     End With
@@ -229,7 +227,6 @@ Private Sub Form_Load()
 
     txtName.Text = mArticle.mName
     txtDetails.Text = mArticle.mDetails
-    'cboCategories.Text = mArticle.mCategoryName
     cboCategories.Text = mArticle.mCategory.mName
     
     If CategoryRepository.GetCategories().Count <> 0 Then
@@ -245,10 +242,6 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub SetComboBox(ParamArray varParam() As Variant)
-    'For i = 0 To UBound(varParam)
-    '    cboCategories.AddItem varParam(i)
-    'Next
-    
     Dim v As Variant
     
     For Each v In varParam

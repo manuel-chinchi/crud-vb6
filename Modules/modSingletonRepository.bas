@@ -1,21 +1,21 @@
 Attribute VB_Name = "modSingletonRepository"
 Option Explicit
 
-Private mInstanceAR As clsArticleRepository
-Private mInstanceCR As clsCategoryRepository
+Private mInstanceArticleRepository As clsArticleRepository
+Private mInstanceCategoryRepository As clsCategoryRepository
 
 Public Function GetArticleRepository() As clsArticleRepository
-    If mInstanceAR Is Nothing Then
-        Set mInstanceAR = New clsArticleRepository
+    If mInstanceArticleRepository Is Nothing Then
+        Set mInstanceArticleRepository = New clsArticleRepository
     End If
     
-    Set GetArticleRepository = mInstanceAR
+    Set GetArticleRepository = mInstanceArticleRepository
 End Function
 
 Public Function GetCategoryRepository() As clsCategoryRepository
-    If mInstanceCR Is Nothing Then
-        Set mInstanceCR = New clsCategoryRepository
+    If mInstanceCategoryRepository Is Nothing Then
+        Set mInstanceCategoryRepository = New clsCategoryRepository
     End If
     
-    Set GetCategoryRepository = mInstanceCR
+    Set GetCategoryRepository = mInstanceCategoryRepository
 End Function
