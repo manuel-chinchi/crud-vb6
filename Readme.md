@@ -72,3 +72,4 @@ to deploy the application to a clean machine. I hope it helps you.
 * [Use of Dictionary in VB6](https://www.codestack.net/visual-basic/data-sets/dictionary/)
 * [Use of dictionary in VBA/VB6](https://vba846.wordpress.com/objeto-dictionary-para-vba/)
 * [ListView column click order](https://www.vbforums.com/showthread.php?275658-ListView-Column-Click-(Sort)-Resolved!!)
+* [Sort ListView column click](https://www.vbforums.com/showthread.php?301328-Vb6-Sort-Listview-By-Dates-numbers-text)
