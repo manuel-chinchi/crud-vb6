@@ -25,6 +25,7 @@ Module=modIOHelper; Modules\modIOHelper.bas
 Class=clsDependencyManager; Classes\clsDependencyManager.cls
 Class=clsListViewUIManager; Classes\clsListViewUIManager.cls
 Class=clsComboBoxUIManager; Classes\clsComboBoxUIManager.cls
+Module=modLVSort; Modules\modLVSort.bas
 Startup="frmMain"
 HelpFile=""
 Command32=""

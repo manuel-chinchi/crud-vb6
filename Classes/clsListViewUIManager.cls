@@ -15,6 +15,9 @@ Option Explicit
 
 Dim WithEvents mListView As ListView
 Attribute mListView.VB_VarHelpID = -1
+Private mColumnSortOrder
+Private mSortColumn As Integer
+Private mSortedAsc As Boolean
 
 Public Sub Initialize(ByRef lvw As ListView)
     Set mListView = lvw
@@ -24,3 +27,26 @@ Private Sub mListView_ItemCheck(ByVal Item As MSComctlLib.ListItem)
     Item.Selected = True
 End Sub
 
+Private Sub mListView_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
+    If mSortedAsc Then
+        mSortedAsc = False
+    Else
+        mSortedAsc = True
+    End If
+    
+    Select Case ColumnHeader.Text
+        Case "Id", "Articles"
+            If mSortedAsc = True Then
+                Call SortColumn(mListView, ColumnHeader.Index, sortDescending, sortNumeric)
+            Else
+                Call SortColumn(mListView, ColumnHeader.Index, sortAscending, sortNumeric)
+            End If
+            
+        Case "Name", "Details", "Category"
+            If mSortedAsc = True Then
+                Call SortColumn(mListView, ColumnHeader.Index, sortDescending, sortAlpha)
+            Else
+                Call SortColumn(mListView, ColumnHeader.Index, sortAscending, sortAlpha)
+            End If
+    End Select
+End Sub

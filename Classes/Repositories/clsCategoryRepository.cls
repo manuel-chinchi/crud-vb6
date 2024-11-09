@@ -13,33 +13,33 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Categories As Collection
-Dim DBConnection As clsSQLiteConnection
-Dim ArticleRepository As clsArticleRepository
+Dim mCategories As Collection
+Dim mConnection As clsSQLiteConnection
+Dim mArticleRepository As clsArticleRepository
 Dim i, j As Integer
 
 Private Sub Class_Initialize()
-    Set Categories = New Collection
-    Set DBConnection = New clsSQLiteConnection
-    Set ArticleRepository = New clsArticleRepository
-    DBConnection.filePath = App.Path + "\Data\database.db"
+    Set mCategories = New Collection
+    Set mConnection = New clsSQLiteConnection
+    Set mArticleRepository = New clsArticleRepository
+    mConnection.filePath = App.Path + "\Data\database.db"
 End Sub
 
 Private Sub Class_Terminate()
-    Set Categories = Nothing
-    Set DBConnection = Nothing
+    Set mCategories = Nothing
+    Set mConnection = Nothing
 End Sub
 
 Public Function GetCategories() As Collection
-    'NOTA: lanzar error en DBConnection si no se cargo el parametro .FilePath
-    'Set GetCategories = Categories
+    'NOTA: lanzar error en mConnection si no se cargo el parametro .FilePath
+    'Set GetCategories = mCategories
     
     Dim vCategories As Variant
     Dim cCategories As New Collection
     
-    DBConnection.OpenDB
-    DBConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_categories.sql")
-    vCategories = DBConnection.Cursor
+    mConnection.OpenDB
+    mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_categories.sql")
+    vCategories = mConnection.Cursor
 
     Dim oCategory As New clsCategory
     For i = 0 To UBound(vCategories)
@@ -48,10 +48,10 @@ Public Function GetCategories() As Collection
         Dim vArticles As Variant
         Dim cArticles As New Collection
         
-        DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_articles_of_category.sql")
-        DBConnection.AddWithValue "@CategoryId", vCategories(i, 0)
-        DBConnection.ExecuteNonQuery
-        vArticles = DBConnection.Cursor
+        mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_articles_of_category.sql")
+        mConnection.AddWithValue "@CategoryId", vCategories(i, 0)
+        mConnection.ExecuteNonQuery
+        vArticles = mConnection.Cursor
         
         If Not IsEmpty(vArticles) Then
             For j = 0 To UBound(vArticles)
@@ -81,23 +81,23 @@ Public Function GetCategories() As Collection
         Set cArticles = New Collection
     Next
     
-    DBConnection.CloseDB
+    mConnection.CloseDB
     Set GetCategories = cCategories
 End Function
 
 Public Sub CreateCategory(obj As clsCategory)
-    DBConnection.OpenDB
-    DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_create_category.sql")
-    DBConnection.AddWithValue "@Name", obj.mName
-    DBConnection.AddWithValue "@CreateAt", Format(Now, "dd-mm-yyyy hh:mm:ss")
-    DBConnection.ExecuteNonQuery
-    DBConnection.CloseDB
+    mConnection.OpenDB
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_create_category.sql")
+    mConnection.AddWithValue "@Name", obj.mName
+    mConnection.AddWithValue "@CreateAt", Format(Now, "dd-mm-yyyy hh:mm:ss")
+    mConnection.ExecuteNonQuery
+    mConnection.CloseDB
 End Sub
 
 Public Sub DeleteCategory(Id As Integer)
-    DBConnection.OpenDB
-    DBConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_delete_category.sql")
-    DBConnection.AddWithValue "@Id", Id
-    DBConnection.ExecuteNonQuery
-    DBConnection.CloseDB
+    mConnection.OpenDB
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_delete_category.sql")
+    mConnection.AddWithValue "@Id", Id
+    mConnection.ExecuteNonQuery
+    mConnection.CloseDB
 End Sub

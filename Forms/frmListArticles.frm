@@ -153,17 +153,15 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim i As Integer
+Dim i
 Dim mArticleRepository As clsArticleRepository
 Dim mListViewUIManager As New clsListViewUIManager
-
 
 Private Sub Form_Load()
     Set mArticleRepository = modSingletonRepository.GetArticleRepository()
 
-    SetHeader " ", "Id", "Name", "Details", "Category"
-    SetHeaderWidth 300, 900, 1500, 1800, 1200
-    SetDataSource mArticleRepository.GetArticles()
+    LoadArticleHeaders
+    LoadArticles mArticleRepository.GetArticles()
     cmdEdit.Enabled = False
     cmdDelete.Enabled = False
     
@@ -175,7 +173,7 @@ Private Sub cmdAdd_Click()
     
     If frmCreateArticle.DialogResult = vbOK Then
         mArticleRepository.CreateArticle frmCreateArticle.Article
-        SetDataSource mArticleRepository.GetArticles()
+        LoadArticles mArticleRepository.GetArticles()
     End If
 End Sub
 
@@ -208,7 +206,7 @@ Private Sub cmdEdit_Click()
     
         If frmEditArticle.DialogResult = vbOK Then
             mArticleRepository.UpdateArticle frmEditArticle.Article
-            SetDataSource mArticleRepository.GetArticles()
+            LoadArticles mArticleRepository.GetArticles()
             cmdEdit.Enabled = False
         End If
     Else
@@ -230,7 +228,7 @@ Private Sub cmdDelete_Click()
             mArticleRepository.DeleteArticle (Int(iId))
         Next
         
-        SetDataSource mArticleRepository.GetArticles()
+        LoadArticles mArticleRepository.GetArticles()
     End If
 End Sub
 
@@ -239,7 +237,7 @@ Private Sub cmdSearch_Click()
     Set arrArticlesFilter = mArticleRepository.SearchArticle(txtSearch.Text)
     
     If Not arrArticlesFilter Is Nothing Then
-        SetDataSource arrArticlesFilter
+        LoadArticles arrArticlesFilter
         
         cmdEdit.Enabled = False
         cmdDelete.Enabled = False
@@ -253,7 +251,7 @@ Private Sub txtSearch_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub cmdShowAll_Click()
-    SetDataSource mArticleRepository.GetArticles()
+    LoadArticles mArticleRepository.GetArticles()
     cmdEdit.Enabled = False
     cmdDelete.Enabled = False
 End Sub
@@ -275,30 +273,21 @@ Private Sub lvwArticles_Click()
     End If
 End Sub
 
-Private Sub SetHeader(ParamArray varParam() As Variant)
+Private Sub LoadArticleHeaders()
     With lvwArticles
         With .ColumnHeaders
             .Clear
-            
-            For i = 0 To UBound(varParam)
-                .Add , , varParam(i), 1000
-            Next
+
+            .Add , , " ", 300
+            .Add , , "Id", 800
+            .Add , , "Name", 1500
+            .Add , , "Details", 1800
+            .Add , , "Category", 1200
         End With
     End With
 End Sub
 
-Private Sub SetHeaderWidth(ParamArray varParam() As Variant)
-    With lvwArticles
-        With .ColumnHeaders
-            
-            For i = 0 To UBound(varParam)
-                .Item(i + 1).Width = varParam(i)
-            Next
-        End With
-    End With
-End Sub
-
-Private Sub SetDataSource(arr As Collection)
+Private Sub LoadArticles(arr As Collection)
     Dim li As ListItem
     Dim oArticle As clsArticle
 
@@ -306,6 +295,7 @@ Private Sub SetDataSource(arr As Collection)
     
     For Each oArticle In arr
         Set li = lvwArticles.ListItems.Add(, , "")
+        
         li.SubItems(1) = oArticle.mId
         li.SubItems(2) = oArticle.mName
         li.SubItems(3) = oArticle.mDetails

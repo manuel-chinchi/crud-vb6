@@ -93,9 +93,8 @@ Dim mListViewUIManager As New clsListViewUIManager
 Private Sub Form_Load()
     Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
     
-    SetHeader " ", "Id", "Name", "Articles"
-    SetHeaderWidth 300, 900, 1800, 1200
-    SetDataSource mCategoryRepository.GetCategories()
+    LoadCategoryHeaders
+    LoadCategories mCategoryRepository.GetCategories()
     cmdDelete.Enabled = False
     
     mListViewUIManager.Initialize lvwCategories
@@ -106,7 +105,7 @@ Private Sub cmdAdd_Click()
     
     If frmCreateCategory.DialogResult = vbOK Then
         mCategoryRepository.CreateCategory frmCreateCategory.Category
-        SetDataSource mCategoryRepository.GetCategories()
+        LoadCategories mCategoryRepository.GetCategories()
     End If
 End Sub
 
@@ -124,33 +123,24 @@ Private Sub cmdDelete_Click()
             mCategoryRepository.DeleteCategory (Int(iId))
         Next
             
-        SetDataSource mCategoryRepository.GetCategories()
+        LoadCategories mCategoryRepository.GetCategories()
     End If
 End Sub
 
-Private Sub SetHeader(ParamArray varParam() As Variant)
+Private Sub LoadCategoryHeaders()
     With lvwCategories
         With .ColumnHeaders
             .Clear
-            
-            For i = 0 To UBound(varParam)
-                .Add , , varParam(i), 1000
-            Next
+
+            .Add , , " ", 300
+            .Add , , "Id", 900
+            .Add , , "Name", 1800
+            .Add , , "Articles", 1200
         End With
     End With
 End Sub
 
-Private Sub SetHeaderWidth(ParamArray varParam() As Variant)
-    With lvwCategories
-        With .ColumnHeaders
-            For i = 0 To UBound(varParam)
-                .Item(i + 1).Width = varParam(i)
-            Next
-        End With
-    End With
-End Sub
-
-Private Sub SetDataSource(arr As Collection)
+Private Sub LoadCategories(arr As Collection)
     Dim li As ListItem
     Dim oCategory As clsCategory
 
