@@ -89,7 +89,6 @@ Private Declare Function sqlite3_changes Lib "sqlite.dll" (ByVal DB_Handle As Lo
 Private Declare Function sqlite_get_table Lib "sqlite.dll" (ByVal DB_Handle As Long, ByVal SQLString As String, ByRef ErrStr As String) As Variant()
 Private Declare Function sqlite_libversion Lib "sqlite.dll" () As String
 Private Declare Function number_of_rows_from_last_call Lib "sqlite.dll" () As Long
-Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
 
 Private i As Long
 Private j As Long
@@ -111,6 +110,7 @@ Private m_lRows As Long
 Private m_lColumns As Long
 Private m_lRowLimit As Long
 Private m_lColumnLimit As Long
+Private m_cItems As Collection
 
 Public Property Get filePath() As String
     filePath = m_sFilePath
@@ -140,6 +140,13 @@ Public Property Let Cursor(vData As Variant)
     m_vCursor = vData
 End Property
 
+Private Property Set Items(cData As Collection)
+    Set m_cItems = cData
+End Property
+
+Public Property Get Items() As Collection
+    Set Items = m_cItems
+End Property
 
 Public Property Get CursorString() As String
     Dim sHeaders As String
@@ -247,6 +254,7 @@ Private Sub Class_Initialize()
     ColumnLimit = -1
     Rows = -1
     Columns = -1
+    Set Items = New Collection
 End Sub
 
 
@@ -266,6 +274,11 @@ Public Sub OpenDB(Optional ByVal sFilePath As String = "")
 End Sub
 
 Public Sub ExecuteQuery(Optional sQuery As Variant = Empty, Optional fIncludeHeaders As Boolean = False)
+On Error GoTo CatchError
+    If m_lHandle = -1 Then
+        Err.Raise vbObjectError + 513, "ExecuteNonQuery", "value of m_lHandle is INVALID. Check that the connection to the database is open"
+    End If
+    
     Query = sQuery
     m_vCursor = sqlite_get_table(m_lHandle, m_sQuery, m_sError)
 
@@ -274,11 +287,27 @@ On Error GoTo ErrorEmptyCursor
     ColumnLimit = UBound(m_vCursor, 2)
     Columns = ColumnLimit + 1
     Headers = GetHeadersFromCursor
+    RowLimit = UBound(m_vCursor, 1)
+    
+    Set m_cItems = New Collection
+    For i = 1 To RowLimit
+        Dim oDict As New Dictionary
+        
+        For j = 0 To ColumnLimit
+            oDict.Add m_vCursor(0, j), m_vCursor(i, j)
+        Next j
+
+        m_cItems.Add oDict
+        Set oDict = Nothing
+    Next i
+    
     If fIncludeHeaders = False Then
         RemoveHeaderFromCursor
     End If
+    
     RowLimit = UBound(Cursor, 1)
     Rows = RowLimit + 1
+    
     Exit Sub
 
 ErrorEmptyCursor:
@@ -289,6 +318,12 @@ ErrorEmptyCursor:
     Columns = -1
     Headers = Empty
     Cursor = Empty
+    Set Items = Nothing
+    
+    Exit Sub
+    
+CatchError:
+    MsgBox "Error #" & Err.Number & ": '" & Err.Description & "' from '" & Err.Source & "'"
 End Sub
 
 Public Sub ExecuteNonQuery(Optional fIncludeHeaders As Boolean = False)
@@ -304,22 +339,40 @@ On Error GoTo ErrorEmptyCursor
     ColumnLimit = UBound(Cursor, 2)
     Columns = ColumnLimit + 1
     Headers = GetHeadersFromCursor
+    RowLimit = UBound(m_vCursor, 1)
+
+    Set m_cItems = New Collection
+    For i = 1 To RowLimit
+        Dim oDict As New Dictionary
+        
+        For j = 0 To ColumnLimit
+            oDict.Add m_vCursor(0, j), m_vCursor(i, j)
+        Next j
+
+        m_cItems.Add oDict
+        Set oDict = Nothing
+    Next i
+    
     If fIncludeHeaders = False Then
         RemoveHeaderFromCursor
     End If
+    
     RowLimit = UBound(Cursor, 1)
     Rows = RowLimit + 1
+    
     Exit Sub
     
 ErrorEmptyCursor:
-
     RowLimit = -1
     ColumnLimit = -1
     Rows = -1
     Columns = -1
     Headers = Empty
     Cursor = Empty
+    Set Items = Nothing
+    
     Exit Sub
+    
 CatchError:
     MsgBox "Error #" & Err.Number & ": '" & Err.Description & "' from '" & Err.Source & "'"
 End Sub
@@ -335,6 +388,7 @@ Public Sub CloseDB()
     Rows = -1
     Columns = -1
     Headers = Empty
+    Set Items = Nothing
 End Sub
 
 Public Sub AddWithValue(sParameterName As String, vValue As Variant)

@@ -2,6 +2,25 @@ Attribute VB_Name = "modArticleHelper"
 'TODO implementar algo mas flexible para parsear los objetos. Revisar el obj
 ' Dictionary si puede servir
 
+Public Function Create(Id As Integer, _
+                        Name As String, _
+                        Details As String, _
+                        Category As clsCategory, _
+                        CreateAt As Date, _
+                        UpdateAt As Date) As clsArticle
+    Dim obj As New clsArticle
+    With obj
+        .mId = Id
+        .mName = Name
+        .mDetails = Details
+        Set .mCategory = Category
+        .mCreateAt = CreateAt
+        .mUpdateAt = UpdateAt
+    End With
+    
+    Set Create = obj
+End Function
+
 Public Function NewArticle(ParamArray varParams() As Variant) As Object
     Dim Article As clsArticle
     Set Article = New clsArticle

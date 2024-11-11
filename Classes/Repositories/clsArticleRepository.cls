@@ -28,56 +28,61 @@ Private Sub Class_Terminate()
     Set mConnection = Nothing
 End Sub
 
+
 Public Function GetArticles() As Collection
-    Dim vmArticles As Variant
+On Error GoTo Catch
+    Dim cArticles As New Collection
     
     mConnection.OpenDB
-    Dim sQuery As String
-    sQuery = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_articles.sql")
-    mConnection.ExecuteQuery sQuery
-    vmArticles = mConnection.Cursor
+    mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_articles.sql")
     
-    If IsEmpty(vmArticles) Then
-        Set GetArticles = Nothing
-    Else
-        Dim oArticle As New clsArticle
-        Dim cmArticles As New Collection
-        
-        For i = 0 To UBound(vmArticles)
+    Dim cItems As Collection
+    Set cItems = mConnection.Items
             
-            Dim vCategory As Variant
-            Dim oCategory As clsCategory
-            
+    Dim oDict As Dictionary
+    If Not cItems Is Nothing Then
+        For Each oDict In cItems
             mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_category_of_article.sql")
-            mConnection.AddWithValue "@CategoryId", vmArticles(i, 6)
+            mConnection.AddWithValue "@CategoryId", oDict("CategoryId")
             mConnection.ExecuteNonQuery
-            vCategory = mConnection.Cursor
             
-            Set oCategory = modCategoryHelper.NewCategory( _
-                vCategory(0, 0), _
-                vCategory(0, 1), _
-                vCategory(0, 2), _
-                Nothing, _
-                vCategory(0, 3), _
-                vCategory(0, 4) _
+            Dim cItems2 As Collection
+            Set cItems2 = mConnection.Items
+            
+            Dim oDict2 As Dictionary
+            For Each oDict2 In cItems2
+                Dim oCategory As clsCategory
+                Set oCategory = modCategoryHelper.Create( _
+                    oDict2("Id"), _
+                    oDict2("Name"), _
+                    oDict2("State"), _
+                    oDict2("CreateAt"), _
+                    oDict2("UpdateAt"), _
+                    Nothing _
+                )
+            Next oDict2
+            
+            Dim oArticle As New clsArticle
+            Set oArticle = modArticleHelper.Create( _
+                oDict("Id"), _
+                oDict("Name"), _
+                oDict("Details"), _
+                oCategory, _
+                oDict("CreateAt"), _
+                oDict("UpdateAt") _
             )
-        
-            Set oArticle = modArticleHelper.NewArticle( _
-                    vmArticles(i, 0), _
-                    vmArticles(i, 1), _
-                    vmArticles(i, 2), _
-                    vmArticles(i, 3), _
-                    vmArticles(i, 4), _
-                    vmArticles(i, 5), _
-                    oCategory, _
-                    vmArticles(i, 6) _
-                    )
-            cmArticles.Add oArticle
-        Next
+            cArticles.Add oArticle
+            Set oArticle = Nothing
+            Set oCategory = Nothing
+        Next oDict
     End If
     
     mConnection.CloseDB
-    Set GetArticles = cmArticles
+    Set GetArticles = cArticles
+    Exit Function
+    
+Catch:
+    Err.Raise vbObjectError + 513, , Err.Number & " " & Err.Description & " on GetCategories"
 End Function
 
 Public Sub CreateArticle(obj As clsArticle)
@@ -112,59 +117,64 @@ Public Sub DeleteArticle(Id As Long)
 End Sub
 
 Public Function SearchArticle(sSearch As String) As Collection
-    Dim vmArticles As Variant
+On Error GoTo Catch
+    Dim cArticles As New Collection
     
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_search_article.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_search_article.sql")
     mConnection.AddWithValue "@Search", sSearch
     mConnection.ExecuteNonQuery
-    vmArticles = mConnection.Cursor
-
-    If IsEmpty(vmArticles) Then
-        Set SearchArticle = Nothing
-    Else
-        Dim oArticle As New clsArticle
-        Dim cmArticles As New Collection
-        
-        For i = 0 To UBound(vmArticles)
-        
-            Dim vCategory As Variant
-            Dim oCategory As clsCategory
-            
+    
+    Dim oDict As Dictionary
+    Dim cItems As Collection
+    Set cItems = mConnection.Items
+    
+    If Not cItems Is Nothing Then
+        For Each oDict In cItems
             mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_category_of_article.sql")
-            mConnection.AddWithValue "@CategoryId", vmArticles(i, 6)
+            mConnection.AddWithValue "@CategoryId", oDict("CategoryId")
             mConnection.ExecuteNonQuery
-            vCategory = mConnection.Cursor
             
-            Set oCategory = modCategoryHelper.NewCategory( _
-                vCategory(0, 0), _
-                vCategory(0, 1), _
-                vCategory(0, 2), _
-                Nothing, _
-                vCategory(0, 3), _
-                vCategory(0, 4) _
-            )
-        
-            Set oArticle = modArticleHelper.NewArticle( _
-                    vmArticles(i, 0), _
-                    vmArticles(i, 1), _
-                    vmArticles(i, 2), _
-                    vmArticles(i, 3), _
-                    vmArticles(i, 4), _
-                    vmArticles(i, 5), _
-                    oCategory, _
-                    vmArticles(i, 6) _
+            Dim oDict2 As Dictionary
+            Dim cItems2 As Collection
+            Set cItems2 = mConnection.Items
+            
+            For Each oDict2 In cItems2
+                Dim oCategory As clsCategory
+                Set oCategory = modCategoryHelper.Create( _
+                    oDict2("Id"), _
+                    oDict2("Name"), _
+                    oDict2("Status"), _
+                    oDict2("CreateAt"), _
+                    oDict2("UpdateAt"), _
+                    Nothing _
                 )
-                    
-            cmArticles.Add oArticle
-        Next
+            Next oDict2
+            
+            Dim oArticle As New clsArticle
+            Set oArticle = modArticleHelper.Create( _
+                oDict("Id"), _
+                oDict("Name"), _
+                oDict("Details"), _
+                oCategory, _
+                oDict("CreateAt"), _
+                oDict("UpdateAt") _
+            )
+            
+            cArticles.Add oArticle
+            Set oArticle = Nothing
+            Set oCategory = Nothing
+        Next oDict
     End If
     
     mConnection.CloseDB
+    Set SearchArticle = cArticles
+    Exit Function
     
-    Set SearchArticle = cmArticles
+Catch:
+    Err.Raise vbObjectError + 513, , Err.Number & " " & Err.Description & " on SearchArticle2"
 End Function
 
-Function GetDateTimeAsString() As String
+Private Function GetDateTimeAsString() As String
     GetDateTimeAsString = Format(Now, "dd-mm-yyyy  hh:mm:ss")
 End Function

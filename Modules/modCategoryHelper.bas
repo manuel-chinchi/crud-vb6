@@ -6,6 +6,26 @@ Option Explicit
 
 Dim i As Integer
 
+Public Function Create(Id As Integer, _
+                        Name As String, _
+                        Status As Boolean, _
+                        CreateAt As Date, _
+                        UpdateAt As Date, _
+                        Articles As Collection) As clsCategory
+    Dim obj As New clsCategory
+    
+    With obj
+        .mId = Id
+        .mName = Name
+        .mStatus = Status
+        .mCreateAt = CreateAt
+        .mUpateAt = UpdateAt
+        Set .mArticles = Articles
+    End With
+    
+    Set Create = obj
+End Function
+
 Public Function NewCategory(ParamArray varParam() As Variant) As Object
     Dim Category As clsCategory
     Set Category = New clsCategory

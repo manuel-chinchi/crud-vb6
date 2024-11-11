@@ -31,55 +31,58 @@ Private Sub Class_Terminate()
 End Sub
 
 Public Function GetCategories() As Collection
-    'NOTA: lanzar error en mConnection si no se cargo el parametro .FilePath
-    'Set GetCategories = mCategories
-    
-    Dim vCategories As Variant
     Dim cCategories As New Collection
     
     mConnection.OpenDB
     mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_categories.sql")
-    vCategories = mConnection.Cursor
-
-    Dim oCategory As New clsCategory
-    For i = 0 To UBound(vCategories)
-
-        Dim oArticle As clsArticle
-        Dim vArticles As Variant
-        Dim cArticles As New Collection
+    
+    Dim dCategory As Dictionary
+    Dim cItemsC As New Collection
+    
+    Set cItemsC = mConnection.Items
+    
+    For Each dCategory In cItemsC
+        Dim oCategory As New clsCategory
         
         mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_articles_of_category.sql")
-        mConnection.AddWithValue "@CategoryId", vCategories(i, 0)
+        mConnection.AddWithValue "@CategoryId", dCategory("c.Id")
         mConnection.ExecuteNonQuery
-        vArticles = mConnection.Cursor
         
-        If Not IsEmpty(vArticles) Then
-            For j = 0 To UBound(vArticles)
-                Set oArticle = modArticleHelper.NewArticle( _
-                    vArticles(j, 0), _
-                    vArticles(j, 1), _
-                    vArticles(j, 2), _
-                    vArticles(j, 3), _
-                    vArticles(j, 4), _
-                    vArticles(j, 5), _
-                    Nothing _
-                    )
-                cArticles.Add oArticle
-            Next
-        End If
-
-        Set oCategory = modCategoryHelper.NewCategory( _
-            vCategories(i, 0), _
-            vCategories(i, 1), _
-            vCategories(i, 2), _
-            cArticles, _
-            vCategories(i, 3), _
-            vCategories(i, 4) _
+        Dim dArticle As Dictionary
+        Dim cItemsA As New Collection
+        
+        Set cItemsA = mConnection.Items
+        
+        Dim cArticles As New Collection
+        
+        For Each dArticle In cItemsA
+            Dim oArticle As clsArticle
+            
+            Set oArticle = modArticleHelper.Create( _
+                dArticle("Id"), _
+                dArticle("Name"), _
+                dArticle("Details"), _
+                Nothing, _
+                dArticle("CreateAt"), _
+                dArticle("UpdateAt") _
             )
+            
+            cArticles.Add oArticle
+        Next dArticle
+        
+        Set oCategory = modCategoryHelper.Create( _
+            dCategory("c.Id"), _
+            dCategory("c.Name"), _
+            dCategory("c.Status"), _
+            dCategory("c.CreateAt"), _
+            dCategory("c.UpdateAt"), _
+            cArticles _
+        )
         
         cCategories.Add oCategory
-        Set cArticles = New Collection
-    Next
+        Set oCategory = Nothing
+        Set cArticles = Nothing
+    Next dCategory
     
     mConnection.CloseDB
     Set GetCategories = cCategories

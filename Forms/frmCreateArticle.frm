@@ -200,6 +200,7 @@ Public Property Get CategoryId() As Integer
 End Property
 
 Private Sub Form_Load()
+On Error GoTo Catch
     Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
 
     If mCategoryRepository.GetCategories().Count <> 0 Then
@@ -214,6 +215,11 @@ Private Sub Form_Load()
     cboCategories.ListIndex = 0
     
     mComboBoxUIManager.Initialize cboCategories
+    Exit Sub
+    
+Catch:
+     
+     Err.Raise vbObjectError + 513, , Err.Number & " " & Err.Description & " on Form_Load (" & Me.Name & ")"
 End Sub
 
 Private Sub cmdAccept_Click()

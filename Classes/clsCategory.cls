@@ -19,6 +19,8 @@ Public mCreateAt As Date
 Public mUpateAt As Date
 Public mArticles As Collection
 
+
+
 Public Function ToString() As String
     ToString = _
         "<Id=" & Me.mId & _

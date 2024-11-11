@@ -289,18 +289,20 @@ End Sub
 
 Private Sub LoadArticles(arr As Collection)
     Dim li As ListItem
-    Dim oArticle As clsArticle
+    Dim oArticle As New clsArticle
 
     lvwArticles.ListItems.Clear
     
-    For Each oArticle In arr
-        Set li = lvwArticles.ListItems.Add(, , "")
-        
-        li.SubItems(1) = oArticle.mId
-        li.SubItems(2) = oArticle.mName
-        li.SubItems(3) = oArticle.mDetails
-        li.SubItems(4) = oArticle.mCategory.mName
-    Next
+    If Not arr Is Nothing Then
+        For Each oArticle In arr
+            Set li = lvwArticles.ListItems.Add(, , "")
+            
+            li.SubItems(1) = oArticle.mId
+            li.SubItems(2) = oArticle.mName
+            li.SubItems(3) = oArticle.mDetails
+            li.SubItems(4) = oArticle.mCategory.mName
+        Next
+    End If
 End Sub
 
 Private Function GetIdsOfSelectedArticles() As Collection

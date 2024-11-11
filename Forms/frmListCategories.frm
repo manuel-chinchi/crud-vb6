@@ -127,6 +127,17 @@ Private Sub cmdDelete_Click()
     End If
 End Sub
 
+Private Sub lvwCategories_Click()
+    Dim cArray As Collection
+    Set cArray = GetIdsOfSelectedCategories
+    
+    If cArray.Count = 0 Then
+        cmdDelete.Enabled = False
+    Else
+        cmdDelete.Enabled = True
+    End If
+End Sub
+
 Private Sub LoadCategoryHeaders()
     With lvwCategories
         With .ColumnHeaders
@@ -171,14 +182,3 @@ Private Function GetIdsOfSelectedCategories() As Collection
     
     Set GetIdsOfSelectedCategories = arrIdsCategories
 End Function
-
-Private Sub lvwCategories_Click()
-    Dim cArray As Collection
-    Set cArray = GetIdsOfSelectedCategories
-    
-    If cArray.Count = 0 Then
-        cmdDelete.Enabled = False
-    Else
-        cmdDelete.Enabled = True
-    End If
-End Sub
