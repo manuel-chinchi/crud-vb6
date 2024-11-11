@@ -107,7 +107,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim mCategory As clsCategory
-Dim i As Integer
 Dim mDialogResult As VbMsgBoxResult
 
 Public Property Get Category() As clsCategory
@@ -136,4 +135,11 @@ Private Sub cmdCancel_Click()
     mDialogResult = vbCancel
     
     Unload Me
+End Sub
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Select Case UnloadMode
+        Case vbFormControlMenu 'X'
+            mDialogResult = vbCancel
+    End Select
 End Sub

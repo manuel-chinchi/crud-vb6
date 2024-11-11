@@ -173,10 +173,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim mArticle As clsArticle
-Dim i As Integer
+Dim mArticle As New clsArticle
 Dim mDialogResult As VbMsgBoxResult
-Public CategoryRepository As clsCategoryRepository
+Dim mCategoryRepository As clsCategoryRepository
+Dim mComboBoxUIManager As New clsComboBoxUIManager
 
 Public Property Get Article() As clsArticle
     Set Article = mArticle
@@ -186,17 +186,40 @@ Public Property Get DialogResult() As VbMsgBoxResult
     DialogResult = mDialogResult
 End Property
 
-Private Sub Form_Load()
-    Set mArticle = New clsArticle
+Public Property Get CategoryId() As Integer
+    Dim oCategory As clsCategory
+    Dim cCategories As New Collection
     
-    If CategoryRepository.GetCategories().Count <> 0 Then
-        Dim arr() As Variant
+    Set cCategories = mCategoryRepository.GetCategories()
+    For Each oCategory In cCategories
+        If cboCategories.Text = oCategory.mName Then
+            CategoryId = oCategory.mId
+            Exit For
+        End If
+    Next oCategory
+End Property
+
+Private Sub Form_Load()
+On Error GoTo Catch
+    Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
+
+    If mCategoryRepository.GetCategories().Count <> 0 Then
+        Dim vCategories() As Variant
         
-        arr = modCategoryHelper.ConvertToVariant(CategoryRepository.GetCategories())
-        SetComboBox arr
+        vCategories = modCategoryHelper.ConvertToVariant(mCategoryRepository.GetCategories())
+        SetComboBox vCategories
     Else
         cboCategories.Enabled = False
     End If
+    
+    cboCategories.ListIndex = 0
+    
+    mComboBoxUIManager.Initialize cboCategories
+    Exit Sub
+    
+Catch:
+     
+     Err.Raise vbObjectError + 513, , Err.Number & " " & Err.Description & " on Form_Load (" & Me.Name & ")"
 End Sub
 
 Private Sub cmdAccept_Click()
@@ -204,7 +227,11 @@ Private Sub cmdAccept_Click()
         .mId = 0
         .mName = txtName.Text
         .mDetails = txtDetails.Text
-        .mCategoryName = cboCategories.Text
+        If .mCategory Is Nothing Then
+            Set .mCategory = New clsCategory
+        End If
+        .mCategory.mName = cboCategories.Text
+        .mCategory.mId = Me.CategoryId
     End With
     
     mDialogResult = vbOK
@@ -219,10 +246,7 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub SetComboBox(ParamArray varParam() As Variant)
-    'For i = 0 To UBound(varParam)
-    '    cboCategories.AddItem varParam(i)
-    'Next
-    
+    Dim i
     Dim v As Variant
     
     For Each v In varParam
@@ -234,4 +258,11 @@ Private Sub SetComboBox(ParamArray varParam() As Variant)
             cboCategories.AddItem v
         End If
     Next
+End Sub
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Select Case UnloadMode
+        Case vbFormControlMenu 'X'
+            mDialogResult = vbCancel
+    End Select
 End Sub

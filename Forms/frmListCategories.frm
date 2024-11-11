@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form frmListCategories 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "ListCategories"
@@ -87,21 +87,25 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim i As Integer
-Public CategoryRepository As clsCategoryRepository
+Dim mCategoryRepository As clsCategoryRepository
+Dim mListViewUIManager As New clsListViewUIManager
 
 Private Sub Form_Load()
-    SetHeader " ", "Id", "Name", "Articles"
-    SetHeaderWidth 300, 900, 1800, 1200
-    SetDataSource CategoryRepository.GetCategories()
+    Set mCategoryRepository = modSingletonRepository.GetCategoryRepository()
+    
+    LoadCategoryHeaders
+    LoadCategories mCategoryRepository.GetCategories()
     cmdDelete.Enabled = False
+    
+    mListViewUIManager.Initialize lvwCategories
 End Sub
 
 Private Sub cmdAdd_Click()
     frmCreateCategory.Show vbModal
     
     If frmCreateCategory.DialogResult = vbOK Then
-        CategoryRepository.CreateCategory frmCreateCategory.Category
-        SetDataSource CategoryRepository.GetCategories()
+        mCategoryRepository.CreateCategory frmCreateCategory.Category
+        LoadCategories mCategoryRepository.GetCategories()
     End If
 End Sub
 
@@ -116,47 +120,49 @@ Private Sub cmdDelete_Click()
         If AnswerResult = vbNo Then Exit Sub
     
         For Each iId In arrIdsCategoriesSelected
-            CategoryRepository.DeleteCategory (Int(iId))
+            mCategoryRepository.DeleteCategory (Int(iId))
         Next
             
-        SetDataSource CategoryRepository.GetCategories()
+        LoadCategories mCategoryRepository.GetCategories()
     End If
 End Sub
 
-Private Sub SetHeader(ParamArray varParam() As Variant)
+Private Sub lvwCategories_Click()
+    Dim cArray As Collection
+    Set cArray = GetIdsOfSelectedCategories
+    
+    If cArray.Count = 0 Then
+        cmdDelete.Enabled = False
+    Else
+        cmdDelete.Enabled = True
+    End If
+End Sub
+
+Private Sub LoadCategoryHeaders()
     With lvwCategories
         With .ColumnHeaders
             .Clear
-            
-            For i = 0 To UBound(varParam)
-                .Add , , varParam(i), 1000
-            Next
+
+            .Add , , " ", 300
+            .Add , , "Id", 900
+            .Add , , "Name", 1800
+            .Add , , "Articles", 1200
         End With
     End With
 End Sub
 
-Private Sub SetHeaderWidth(ParamArray varParam() As Variant)
-    With lvwCategories
-        With .ColumnHeaders
-            For i = 0 To UBound(varParam)
-                .Item(i + 1).Width = varParam(i)
-            Next
-        End With
-    End With
-End Sub
-
-Private Sub SetDataSource(arr As Collection)
+Private Sub LoadCategories(arr As Collection)
     Dim li As ListItem
-    Dim objCategory As clsCategory
+    Dim oCategory As clsCategory
 
     lvwCategories.ListItems.Clear
     
-    For Each objCategory In arr
+    For Each oCategory In arr
         Set li = lvwCategories.ListItems.Add(, , "")
-        li.SubItems(1) = objCategory.mId
-        li.SubItems(2) = objCategory.mName
-        If Not objCategory.mArticlesRelated Is Nothing Then
-            li.SubItems(3) = objCategory.mArticlesRelated.Count
+        li.SubItems(1) = oCategory.mId
+        li.SubItems(2) = oCategory.mName
+        If Not oCategory.mArticles Is Nothing Then
+            li.SubItems(3) = oCategory.mArticles.Count
         Else
             li.SubItems(3) = 0
         End If
@@ -176,14 +182,3 @@ Private Function GetIdsOfSelectedCategories() As Collection
     
     Set GetIdsOfSelectedCategories = arrIdsCategories
 End Function
-
-Private Sub lvwCategories_Click()
-    Dim cArray As Collection
-    Set cArray = GetIdsOfSelectedCategories
-    
-    If cArray.Count = 0 Then
-        cmdDelete.Enabled = False
-    Else
-        cmdDelete.Enabled = True
-    End If
-End Sub

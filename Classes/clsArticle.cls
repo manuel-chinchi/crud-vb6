@@ -15,8 +15,42 @@ Attribute VB_Exposed = False
 Public mId As Integer
 Public mName As String
 Public mDetails As String
-Public mCategoryName As String
+Public mCategory As clsCategory
+Public mCreateAt As Date
+Public mUpdateAt As Date
 
-Public Property Get ToString() As String
-    ToString = Me.mId & "," & Me.mName & "," & Me.mDetails & "," & Me.mCategoryName
-End Property
+Public Static Function Create(Id As Integer, _
+                        Name As String, _
+                        Details As String, _
+                        Category As clsCategory, _
+                        CreateAt As Date, _
+                        UpdateAt As Date) As clsArticle
+    Dim obj As New clsArticle
+        
+    With obj
+        .mId = Id
+        .mName = Name
+        .mDetails = Details
+        Set mCategory = Category
+        .mCreateAt = CreateAt
+        .mUpdateAt = UpdateAt
+    End With
+    
+    Set CreateArticle = obj
+End Function
+
+Public Function ToString() As String
+    Dim iCategoryId As Integer
+    If Me.mCategory Is Nothing Then
+        iCategoryId = -1
+    Else
+        iCategoryId = Me.mCategory.mId
+    End If
+    ToString = _
+        "<Id=" & Me.mId & _
+        ", Name=" & Me.mName & _
+        ", Details=" & Me.mDetails & _
+        ", CreateAt=" & Me.mCreateAt & _
+        ", UpdateAt=" & Me.mUpdateAt & _
+        ", Category= <mId=" & iCategoryId & ">>"
+End Function

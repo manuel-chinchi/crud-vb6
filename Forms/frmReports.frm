@@ -109,7 +109,7 @@ Option Explicit
 
 
 Dim m_crxReport As CRAXDRT.Report
-Dim i As Integer
+Dim i
 
 Const ZOOM_FULL_WIDTH As Integer = 1
 Const ZOOM_FULL_PAGE As Integer = 2

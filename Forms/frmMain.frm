@@ -87,6 +87,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
+Private mDependencyManager As New clsDependencyManager
+
 Private Sub cmdArticles_Click()
     frmListArticles.Show vbModal
 End Sub
@@ -99,30 +103,7 @@ Private Sub cmdReports_Click()
     frmReports.Show vbModal
 End Sub
 
-Private Sub Form_Load()
-    InitializeRepositories
+Private Sub Form_Initialize()
+    mDependencyManager.Initialize Me
 End Sub
 
-Private Sub InitializeRepositories()
-    ' ~~~~~~~~~~~ static data ~~~~~~~~~~~
-    Dim ArticleRepository As clsArticleRepository
-    Dim CategoryRepository As clsCategoryRepository
-    
-    Set ArticleRepository = modSingletonRepository.GetArticleRepository()
-    Set CategoryRepository = modSingletonRepository.GetCategoryRepository()
-    
-    ArticleRepository.CreateArticle modArticleHelper.NewArticle(1, "Buzo", "5xU", "Otro")
-    ArticleRepository.CreateArticle modArticleHelper.NewArticle(2, "Jean", "15xU", "Otro")
-    ArticleRepository.CreateArticle modArticleHelper.NewArticle(3, "Gorra", "25xU", "Otro")
-    
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(1, "Remeras", Nothing)
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(2, "Pantalones", Nothing)
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(3, "Zapatillas", Nothing)
-    CategoryRepository.CreateCategory modCategoryHelper.NewCategory(4, "Otro", Nothing)
-    ' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    Set frmCreateArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-    Set frmListArticles.ArticleRepository = modSingletonRepository.GetArticleRepository()
-    Set frmListCategories.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-    Set frmEditArticle.CategoryRepository = modSingletonRepository.GetCategoryRepository()
-End Sub
