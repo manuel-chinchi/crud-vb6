@@ -31,7 +31,7 @@ Articles panel
 Reports
 
 <p align="center">
-	<img src=".resources/screenshots/2024-10-25 20_50_16-Reports.png" width="658">
+	<img src=".resources/screenshots/2024-11-11 22_23_07-Reports.png" width="658">
 </p>
 
 <br>
