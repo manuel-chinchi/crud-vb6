@@ -13,23 +13,23 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim WithEvents mMainForm As Form
-Attribute mMainForm.VB_VarHelpID = -1
+Dim WithEvents mForm As Form
+Attribute mForm.VB_VarHelpID = -1
 Dim mPathSqliteDependency As String
 Dim mPathCleanFilesScript As String
 
 Public Sub Initialize(ByRef frm As Object)
-    Set mMainForm = frm
+    Set mForm = frm
     
     mPathSqliteDependency = App.Path & "\Dependences\SQLite\sqlite.dll"
     mPathCleanFilesScript = App.Path & "\Scripts\cleanup.bat"
 End Sub
 
-Private Sub mMainForm_Load()
+Private Sub mForm_Load()
     LoadDependences
 End Sub
 
-Private Sub mMainForm_Unload(Cancel As Integer)
+Private Sub mForm_Unload(Cancel As Integer)
     CleanTempFiles
 End Sub
 

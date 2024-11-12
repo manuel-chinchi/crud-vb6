@@ -107,16 +107,15 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
-Dim m_crxReport As CRAXDRT.Report
+Dim mReport As CRAXDRT.Report
 Dim i
 
 Const ZOOM_FULL_WIDTH As Integer = 1
 Const ZOOM_FULL_PAGE As Integer = 2
 
-Enum eReportType
-    ArticleReport = 0
-    CategoriesReport = 1
+Enum eReport
+    rArticleReport = 0
+    rCategoriesReport = 1
 End Enum
 
 Enum eFormatType
@@ -125,63 +124,59 @@ Enum eFormatType
     ftWord = 2
 End Enum
 
-Property Get GetPathOfReport(eReportType As eReportType) As String
-    Select Case eReportType
-        Case ArticleReport
+Property Get GetPathOfReport(eReport As eReport) As String
+    Select Case eReport
+        Case rArticleReport
             GetPathOfReport = App.Path & "\Reports\ArticlesReport.rpt"
             
-        Case CategoriesReport
+        Case rCategoriesReport
             GetPathOfReport = App.Path & "\Reports\CategoriesReport.rpt"
     End Select
 End Property
 
 Private Sub Form_Load()
-    Dim rsData As ADODB.Recordset
-    Set rsData = modArticleHelper.ConvertToRecordset(modSingletonRepository.GetArticleRepository().GetArticles())
+    LoadReportList
     
-    LoadReport m_crxReport, rsData, Me.GetPathOfReport(ArticleReport)
-    
-    LoadCombobox "ArticlesReport", "CategoriesReport"
-    
-    cboReports.Text = "ArticlesReport"
+    'implicit load Report
+    cboReports.ListIndex = eReport.rArticleReport
 End Sub
 
 Private Sub miSaveAs_Excel_Click()
     Select Case cboReports.ListIndex
-        Case eReportType.ArticleReport
-            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+        Case eReport.rArticleReport
+            ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
             
-        Case eReportType.CategoriesReport
-            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+        Case eReport.rCategoriesReport
+            ExportReport mReport, App.Path & "\rCategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
 
         Case Else
-            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+            ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
     End Select
 End Sub
 
 Private Sub miSaveAs_PDF_Click()
     Select Case cboReports.ListIndex
-        Case eReportType.ArticleReport
-            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
+        Case eReport.rArticleReport
+            ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
             
-        Case eReportType.CategoriesReport
-            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
+        Case eReport.rCategoriesReport
+            ExportReport mReport, App.Path & "\rCategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
 
         Case Else
-            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
+            ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".pdf", ftPDF, True
     End Select
 End Sub
 
 Private Sub miSaveAs_Word_Click()
     Select Case cboReports.ListIndex
-        Case eReportType.ArticleReport
-            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+        Case eReport.rArticleReport
+            ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
             
-        Case eReportType.CategoriesReport
-            ExportReport m_crxReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+        Case eReport.rCategoriesReport
+            ExportReport mReport, App.Path & "\rCategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
 
         Case Else
-            ExportReport m_crxReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
+            ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".doc", ftWord, True
     End Select
 End Sub
 
@@ -190,16 +185,16 @@ Private Sub cboReports_Click()
     Dim rsData As ADODB.Recordset
     
     Select Case cboReports.ListIndex
-        Case eReportType.ArticleReport '0
+        Case eReport.rArticleReport '0
             Set rsData = modArticleHelper.ConvertToRecordset(modSingletonRepository.GetArticleRepository().GetArticles())
-            sPathReport = Me.GetPathOfReport(ArticleReport)
+            sPathReport = Me.GetPathOfReport(rArticleReport)
             
-        Case eReportType.CategoriesReport '1
+        Case eReport.rCategoriesReport '1
             Set rsData = modCategoryHelper.ConvertToRecordset(modSingletonRepository.GetCategoryRepository().GetCategories())
-            sPathReport = Me.GetPathOfReport(CategoriesReport)
+            sPathReport = Me.GetPathOfReport(rCategoriesReport)
     End Select
         
-    LoadReport m_crxReport, rsData, sPathReport
+    LoadReport mReport, rsData, sPathReport
 End Sub
 
 Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Recordset, Optional sPathReport As String)
@@ -290,3 +285,7 @@ Private Sub LoadCombobox(ParamArray vParam() As Variant)
     Next
 End Sub
 
+Private Sub LoadReportList()
+    cboReports.AddItem "ArticlesReport.rpt"
+    cboReports.AddItem "CategoriesReport.rpt"
+End Sub
