@@ -8,6 +8,7 @@ Begin VB.Form frmReports
    ClientLeft      =   36
    ClientTop       =   660
    ClientWidth     =   9852
+   Icon            =   "frmReports.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -209,9 +210,9 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
     
     crxReport.Database.SetDataSource rsData
     
-    crViewer.ReportSource = crxReport
-    crViewer.ViewReport
-    crViewer.Zoom ZOOM_FULL_PAGE
+    CRViewer.ReportSource = crxReport
+    CRViewer.ViewReport
+    CRViewer.Zoom ZOOM_FULL_PAGE
 End Sub
 
 Private Sub ExportReport(crxReport As CRAXDRT.Report, sFileName As String, eFormatType As eFormatType, Optional bShowDialogbox As Boolean = False)

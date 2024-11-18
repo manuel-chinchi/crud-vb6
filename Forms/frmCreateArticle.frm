@@ -6,6 +6,7 @@ Begin VB.Form frmCreateArticle
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   3624
+   Icon            =   "frmCreateArticle.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
