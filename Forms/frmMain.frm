@@ -90,6 +90,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private mDependencyManager As New clsDependencyManager
+Private mFormUIManager As New clsFormUIManager
 
 Private Sub cmdArticles_Click()
     frmListArticles.Show vbModal
@@ -105,5 +106,6 @@ End Sub
 
 Private Sub Form_Initialize()
     mDependencyManager.Initialize Me
+    mFormUIManager.Initialize Me
 End Sub
 

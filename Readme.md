@@ -73,3 +73,4 @@ to deploy the application to a clean machine. I hope it helps you.
 * [Use of dictionary in VBA/VB6](https://vba846.wordpress.com/objeto-dictionary-para-vba/)
 * [ListView column click order](https://www.vbforums.com/showthread.php?275658-ListView-Column-Click-(Sort)-Resolved!!)
 * [Sort ListView column click](https://www.vbforums.com/showthread.php?301328-Vb6-Sort-Listview-By-Dates-numbers-text)
+* [Embebed manifest into exe (vb6)](https://stackoverflow.com/questions/2182815/embedding-an-application-manifest-into-a-vb6-exe)
