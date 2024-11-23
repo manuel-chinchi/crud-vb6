@@ -8,8 +8,9 @@ Simple CRUD made with VB6 and Crystal Reports 8.5.
 
 ## Development environment
 
-- Microsoft Visual Basic 6.0
+- Microsoft Visual Basic 6.0 (VB6)
 - Crystal Reports 8.5
+- InnoSetup 6.3.3
 
 ## Screenshots
 
