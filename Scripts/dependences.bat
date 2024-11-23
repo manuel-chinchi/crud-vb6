@@ -1,7 +1,7 @@
 @echo off
 
 rem This script register dependences for run the crud_vb6.exe application 
-rem Source: https://github.com/manuel-chinchi/crud-vb6/tree/master/Scripts/dependences.bat
+rem Source: https://github.com/manuel-chinchi/crud-vb6/blob/master/Scripts/dependences.bat
 
 rem The .ocx and .dll files must be in the same directory as the .exe. This script must also 
 rem be run from that directory.

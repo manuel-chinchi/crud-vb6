@@ -27,7 +27,7 @@ SetupIconFile={#RootPath}\Icons\SetupClassicIcon.ico
 WizardImageFile={#RootPath}\Images\WizClassicImage.bmp
 WizardSmallImageFile={#RootPath}\Images\WizClassicSmallImage.bmp
 OutputDir={#RootPath}\InnoSetup_Installer
-OutputBaseFilename=setup_crud_vb6
+OutputBaseFilename=crud_vb6_setup
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

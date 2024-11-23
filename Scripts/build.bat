@@ -5,8 +5,8 @@ set VB6_COMPILER="C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.EXE"
 
 REM Path al proyecto y archivos de recursos
 set PROJECT_PATH=%~dp0..\crud_vb6.vbp
-set RC_FILE="%~dp0..\Manifest\app.rc"
-set RES_FILE="%~dp0..\Manifest\app.res"
+set RC_FILE="%~dp0..\Resources\app.rc"
+set RES_FILE="%~dp0..\Resources\app.res"
 
 REM Paso 1: Compilo el archivo .rc como un archivo de recurso .res
 
