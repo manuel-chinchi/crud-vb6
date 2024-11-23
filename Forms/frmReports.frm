@@ -148,7 +148,7 @@ Private Sub miSaveAs_Excel_Click()
             ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
             
         Case eReport.rCategoriesReport
-            ExportReport mReport, App.Path & "\rCategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
+            ExportReport mReport, App.Path & "\CategoriesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
 
         Case Else
             ExportReport mReport, App.Path & "\ArticlesReport_" & Format(Now, "ddmmyyyy_hhmmss") & ".xls", ftExcel, True
@@ -210,9 +210,9 @@ Private Sub LoadReport(ByRef crxReport As CRAXDRT.Report, rsData As ADODB.Record
     
     crxReport.Database.SetDataSource rsData
     
-    CRViewer.ReportSource = crxReport
-    CRViewer.ViewReport
-    CRViewer.Zoom ZOOM_FULL_PAGE
+    crViewer.ReportSource = crxReport
+    crViewer.ViewReport
+    crViewer.Zoom ZOOM_FULL_PAGE
 End Sub
 
 Private Sub ExportReport(crxReport As CRAXDRT.Report, sFileName As String, eFormatType As eFormatType, Optional bShowDialogbox As Boolean = False)
