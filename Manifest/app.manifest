@@ -13,6 +13,16 @@
         </dependentAssembly>
     </dependency>
 
+    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+        <application>
+            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/> <!-- Windows 10 -->
+            <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}"/> <!-- Windows 8.1 -->
+            <supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}"/> <!-- Windows 8 -->
+            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}"/> <!-- Windows 7 -->
+            <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}"/> <!-- Windows Vista -->
+        </application>
+    </compatibility>
+
     <!-- hight DPI on Windows 10 -->
     <application xmlns="urn:schemas-microsoft-com:asm.v3">
         <windowsSettings>
@@ -22,6 +32,20 @@
     </application>
     
     <!-- permissions --> 
+    <!-- 
+        Ya no es necesario, Windows daba error al querer crear/borrar dinamicamente el sqlite.dll
+        pero se corrigio en este commit 
+            https://github.com/manuel-chinchi/crud-vb6/commit/da013293d582459b0c663a0a61979cf6601fae0d
+        si se revierte esta modificación probablemente haya que usar esta configuración para que
+        el .exe pueda ejecutarse con permisos de administrador
+    -->
+    <!-- 18.12.2024
+        (sobre el comentario anterior)
+        al final tengo que usar 'requireAdministrator' porque sino no me deja guardar los archivos
+        exportados a formatos pdf,xls,doc y tampoco me deja actualizar el archivo de base de datos .db
+        Si hay alguna forma mas "limpia" de ejecutar el programa totalmente funcional sin tener que
+        usar esto no la conozco.
+    -->
     <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
         <security>
             <requestedPrivileges>
@@ -29,4 +53,5 @@
             </requestedPrivileges>
         </security>
     </trustInfo>
-</assembly>     
+    
+</assembly>

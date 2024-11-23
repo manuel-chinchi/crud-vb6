@@ -2,6 +2,10 @@
 
 Simple CRUD made with VB6 and Crystal Reports 8.5.
 
+## Overview
+
+
+
 ## Development environment
 
 - Microsoft Visual Basic 6.0
@@ -74,3 +78,5 @@ to deploy the application to a clean machine. I hope it helps you.
 * [ListView column click order](https://www.vbforums.com/showthread.php?275658-ListView-Column-Click-(Sort)-Resolved!!)
 * [Sort ListView column click](https://www.vbforums.com/showthread.php?301328-Vb6-Sort-Listview-By-Dates-numbers-text)
 * [Embebed manifest into exe (vb6)](https://stackoverflow.com/questions/2182815/embedding-an-application-manifest-into-a-vb6-exe)
+* [vb6 icons free](https://www.vbcorner.net/download_icons.htm)
+* [Permission Windows](https://learn.microsoft.com/en-us/previous-versions/bb756929(v=msdn.10)?)
