@@ -34,7 +34,7 @@ Public Function GetCategories() As Collection
     Dim cCategories As New Collection
     
     mConnection.OpenDB
-    mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_categories.sql")
+    mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path + "\Scripts\SQL\sp_get_categories.sql")
     
     Dim dCategory As Dictionary
     Dim cItemsC As New Collection
@@ -44,7 +44,7 @@ Public Function GetCategories() As Collection
     For Each dCategory In cItemsC
         Dim oCategory As New clsCategory
         
-        mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_get_articles_of_category.sql")
+        mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SQL\sp_get_articles_of_category.sql")
         mConnection.AddWithValue "@CategoryId", dCategory("c.Id")
         mConnection.ExecuteNonQuery
         
@@ -90,7 +90,7 @@ End Function
 
 Public Sub CreateCategory(obj As clsCategory)
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_create_category.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SQL\sp_create_category.sql")
     mConnection.AddWithValue "@Name", obj.mName
     mConnection.AddWithValue "@CreateAt", Format(Now, "dd-mm-yyyy hh:mm:ss")
     mConnection.ExecuteNonQuery
@@ -99,7 +99,7 @@ End Sub
 
 Public Sub DeleteCategory(Id As Integer)
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_delete_category.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SQL\sp_delete_category.sql")
     mConnection.AddWithValue "@Id", Id
     mConnection.ExecuteNonQuery
     mConnection.CloseDB

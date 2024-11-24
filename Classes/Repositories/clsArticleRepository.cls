@@ -34,7 +34,7 @@ On Error GoTo Catch
     Dim cArticles As New Collection
     
     mConnection.OpenDB
-    mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_articles.sql")
+    mConnection.ExecuteQuery modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_articles.sql")
     
     Dim cItems As Collection
     Set cItems = mConnection.Items
@@ -42,7 +42,7 @@ On Error GoTo Catch
     Dim oDict As Dictionary
     If Not cItems Is Nothing Then
         For Each oDict In cItems
-            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_category_of_article.sql")
+            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_category_of_article.sql")
             mConnection.AddWithValue "@CategoryId", oDict("CategoryId")
             mConnection.ExecuteNonQuery
             
@@ -87,7 +87,7 @@ End Function
 
 Public Sub CreateArticle(obj As clsArticle)
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_create_article.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_create_article.sql")
     mConnection.AddWithValue "@Name", obj.mName
     mConnection.AddWithValue "@Details", obj.mDetails
     mConnection.AddWithValue "@CreateAt", GetDateTimeAsString
@@ -98,7 +98,7 @@ End Sub
 
 Public Sub UpdateArticle(obj As clsArticle)
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_update_article.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SQL\sp_update_article.sql")
     mConnection.AddWithValue "@Id", obj.mId
     mConnection.AddWithValue "@Name", obj.mName
     mConnection.AddWithValue "@Details", obj.mDetails
@@ -110,7 +110,7 @@ End Sub
 
 Public Sub DeleteArticle(Id As Long)
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\sp_delete_article.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path + "\Scripts\SQL\sp_delete_article.sql")
     mConnection.AddWithValue "@Id", Id
     mConnection.ExecuteNonQuery
     mConnection.CloseDB
@@ -121,7 +121,7 @@ On Error GoTo Catch
     Dim cArticles As New Collection
     
     mConnection.OpenDB
-    mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_search_article.sql")
+    mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_search_article.sql")
     mConnection.AddWithValue "@Search", sSearch
     mConnection.ExecuteNonQuery
     
@@ -131,7 +131,7 @@ On Error GoTo Catch
     
     If Not cItems Is Nothing Then
         For Each oDict In cItems
-            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\sp_get_category_of_article.sql")
+            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_category_of_article.sql")
             mConnection.AddWithValue "@CategoryId", oDict("CategoryId")
             mConnection.ExecuteNonQuery
             
