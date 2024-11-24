@@ -1,54 +1,108 @@
 # Crud VB6                                                                     
 
-Simple CRUD made with VB6 and Crystal Reports 8.5.
+Simple CRUD made with VB6, Crystal Reports 8.5 and SQLite.
 
 ## Overview
 
+This project consists of a small CRUD (create, read, update, delete) system 
+made in Visual Basic 6 that uses SQLite as a local database engine. It also 
+uses Crystal Reports for reports and allows export to other formats.
 
+The project consists of 3 modules: 
+
+* Articles module with create/update/delete and search operations.
+* Categories module with create/delete operations.
+* Reports module with function to export to .pdf, .doc, and .xls formats.
+
+It is not necessary to install the SQLite ODBC to run the application since
+ it has a special class module for this that makes use of the internal 
+ functions of sqlite.dll (included in the repository)
+
+Also included is the script to create the installer using InnoSetup
+
+## How to use this?
+
+In order to modify the project, you only need to have Crystal Reports 8.5 
+installed (it automatically installs the .OCX libraries used in the 
+application) and then open the crud_vb6.vbp project since Microsoft Visual 
+Basic 6.0. **It is not recommended to modify the cSQLiteConnection.cls 
+file as it contains the functions necessary to interact with the SQLite 
+database**
+
+Then, to test your modified version (test the .exe) with an installer you 
+only need to do the following:
+
+1. Run the `build.bat` file from a terminal as administrator, 
+	this will create a crud_vb6.exe in the root folder
+2. Open the `install.iss` file with InnoSetup and option 
+	 Build > Compile. This will create the installer in the `InnoSetup_Installer` folder
+
+And voila, you now have your own customized version of the CRUD_VB6 system with its standalone installer.
 
 ## Development environment
 
 - Microsoft Visual Basic 6.0 (VB6)
 - Crystal Reports 8.5
 - InnoSetup 6.3.3
+- Greenshot 1.2.10 (for screenshots)
+
+and the classics... Sublime Text, Notepad++, VS Code, etc.
+
+## Platforms
+
+Windows 7 or latter
 
 ## Screenshots
 
-Menu
+Installer
 
 <p align="center">
-	<img src=".resources/newscreenshots/2024-11-17 21_39_56-Main.png" width="243">
-</p>
-
-Articles panel
-
-<p align="center">
-	<img src=".resources/newscreenshots/2024-11-17 21_41_06-ListArticles.png" width="629">
+	<img src=".readme/newscreenshots/2024-11-23%2020_45_11-Seleccione%20el%20Idioma%20de%20la%20Instalaci%C3%B3n.png" width="279">
 </p>
 
 <br>
 <br>
 
 <p align="center">
-	<img src=".resources/newscreenshots/2024-11-17 21_41_22-CreateArticle.png" width="243">
+	<img src=".readme/newscreenshots/2024-11-23%2020_45_52-Instalar%20-%20crud%20vb6%20(by%20Manuel%20%20Chinchi)%20versi%C3%B3n%201.0.png" width="466">
 </p>
 
-Reports
+Main menu
 
 <p align="center">
-	<img src=".resources/newscreenshots/2024-11-17 21_41_51-Reports.png" width="658">
+	<img src=".readme/newscreenshots/2024-11-17 21_39_56-Main.png" width="243">
+</p>
+
+Articles module
+
+<p align="center">
+	<img src=".readme/newscreenshots/2024-11-17 21_41_06-ListArticles.png" width="629">
 </p>
 
 <br>
+<br>
+
+<p align="center">
+	<img src=".readme/newscreenshots/2024-11-17 21_41_22-CreateArticle.png" width="243">
+</p>
+
+Reports module
+
+<p align="center">
+	<img src=".readme/newscreenshots/2024-11-17 21_41_51-Reports.png" width="658">
+</p>
+
+<br>
+
 <!--
 	Nota: No se porque pero para que las imagenes se vean con buena calidad tuve que
 	poner el ancho real de la imagen * 0.8. Por ej. 304 * 0.8 ~= 243. Así las caputras
 	se ven igual que cuando se abren desde algún visualizador de imagenes en Windows.
 -->
 
-## Errors with CR 8.5
+## Errors with Crystal Reports
 
-This is a list of some errors I encountered when working with CR 8.5 and wanting 
+This is a list of some errors I encountered when working with Crystal Reports 8.5 and wanting 
 to deploy the application to a clean machine. I hope it helps you.
 
 | LIBRARY      | ERROR IF NOT FOUND                                                         |
@@ -62,6 +116,8 @@ to deploy the application to a clean machine. I hope it helps you.
 | u2ddisk.dll  | Runtime-Error '-2147190548 (800478ec)': Missing or out-of-date export DLL. |
 | u2fwordw.dll  | Runtime-Error '-2147190548 (800478ec)': Missing or out-of-date export DLL. |
 | u2fxls.dll  | Runtime-Error '-2147190548 (800478ec)': Missing or out-of-date export DLL. |
+
+luckily and thank God all these errors are resolved simply by registering these libraries. View the file dependencies.bat
 
 (\*) It may not be necessary
 
