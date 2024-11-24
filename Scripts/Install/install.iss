@@ -42,12 +42,12 @@ Source: "{#RootPath}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#RootPath}\Data\*"; DestDir: "{app}\Data"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#RootPath}\Reports\*"; DestDir: "{app}\Reports"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#RootPath}\Scripts\*"; DestDir: "{app}\Scripts"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#RootPath}\Dependences\*"; DestDir: "{app}\Dependences"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#RootPath}\Dependences\SQLite\sqlite.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#RootPath}\Dependencies\*"; DestDir: "{app}\Dependencies"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#RootPath}\Dependencies\SQLite\sqlite.dll"; DestDir: "{app}"; Flags: ignoreversion
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent runascurrentuser 
-Filename: "{cmd}"; Parameters: "/C ""{app}\Scripts\dependences.bat"""; WorkingDir: "{app}\Scripts"; Flags: runascurrentuser
+Filename: "{cmd}"; Parameters: "/C ""{app}\Scripts\dependencies.bat"""; WorkingDir: "{app}\Scripts"; Flags: runascurrentuser

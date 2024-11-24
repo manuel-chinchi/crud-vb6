@@ -21,7 +21,7 @@ Dim mPathCleanFilesScript As String
 Public Sub Initialize(ByRef frm As Object)
     Set mForm = frm
     
-    mPathSqliteDependency = App.Path & "\Dependences\SQLite\sqlite.dll"
+    mPathSqliteDependency = App.Path & "\Dependencies\SQLite\sqlite.dll"
     mPathCleanFilesScript = App.Path & "\Scripts\cleanup.bat"
 End Sub
 
