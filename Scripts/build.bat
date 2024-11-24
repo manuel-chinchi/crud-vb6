@@ -31,5 +31,5 @@ if %ERRORLEVEL% neq 0 (
     exit /b %ERRORLEVEL%
 )
 
-echo Compilación completada con éxito.
+echo Compilacion completada con exito.
 pause
