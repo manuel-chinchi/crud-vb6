@@ -111,6 +111,7 @@ Option Explicit
 
 Private mFormUIManager As New clsFormUIManager
 Private mHyperlink As New clsHyperlink
+Private mToolTip As New clsToolTip
 
 Private Sub cmdArticles_Click()
     frmListArticles.Show vbModal

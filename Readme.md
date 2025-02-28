@@ -139,3 +139,8 @@ luckily and thank God all these errors are resolved simply by registering these 
 * [Permission Windows](https://learn.microsoft.com/en-us/previous-versions/bb756929(v=msdn.10)?)
 * [VB6 Common Controls](https://www.vbforums.com/showthread.php?698563-CommonControls-(Replacement-of-the-MS-common-controls)
 * [emule hyperlink on VB6](https://classicvb.net/samples/HyperLabel/)
+* ToolTips
+	* [about tooltips MSDN](https://learn.microsoft.com/en-us/windows/win32/controls/tooltip-controls)
+	* [how create tooltip MSDN](https://learn.microsoft.com/en-us/windows/win32/controls/implement-balloon-tooltips)
+	* [destroy tooltip](https://stackoverflow.com/questions/4850794/is-it-necessary-to-destroy-a-tooltip)
+	* [lib CBallonTooltip.cls](https://binaryworld.net/Main/CodeDetail.aspx?CodeId=3603&atlanta=software%20development)

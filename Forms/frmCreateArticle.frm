@@ -178,6 +178,9 @@ Dim mArticle As New clsArticle
 Dim mDialogResult As VbMsgBoxResult
 Dim mCategoryRepository As clsCategoryRepository
 Dim mComboBoxUIManager As New clsComboBoxUIManager
+Private tt As clsToolTip
+Private ttName As New clsToolTip
+Private ttDetails As New clsToolTip
 
 Public Property Get Article() As clsArticle
     Set Article = mArticle
@@ -267,3 +270,58 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
             mDialogResult = vbCancel
     End Select
 End Sub
+
+' ***
+Private Sub txtName_KeyPress(KeyAscii As Integer)
+    'If Not tt Is Nothing Then
+    '    tt.HideToolTip
+    'End If
+    ttName.HideToolTip
+End Sub
+
+Private Sub txtName_Validate(Cancel As Boolean)
+    If txtName.Text = "" Then
+        Set ttName.mParent = txtName
+        ttName.ShowToolTipFixed "111", 0, 0
+        Cancel = True
+    Else
+        ttName.HideToolTip
+    End If
+    
+    Exit Sub
+    Set tt = New clsToolTip
+    If txtName.Text = "" Then
+        Set tt.mParent = txtName
+        tt.ShowToolTipFixed "El campo nombre no puede estar vacío", 0, 0
+        Cancel = True
+    Else
+        tt.HideToolTip
+    End If
+End Sub
+
+Private Sub txtDetails_KeyPress(KeyAscii As Integer)
+    'If Not tt Is Nothing Then
+    '    tt.HideToolTip
+    'End If
+    ttDetails.HideToolTip
+End Sub
+
+Private Sub txtDetails_Validate(Cancel As Boolean)
+    If txtDetails.Text = "" Then
+        Set ttDetails.mParent = txtDetails
+        ttDetails.ShowToolTipFixed "xxx", 0, 0
+        Cancel = True
+    Else
+        ttDetails.HideToolTip
+    End If
+    
+    Exit Sub
+    If txtDetails.Text = "" Then
+        Set tt.mParent = txtDetails
+        tt.ShowToolTipFixed "El campo Detalles no puede estar vacío", 0, 0
+        Cancel = True
+    Else
+        tt.HideToolTip
+    End If
+End Sub
+
