@@ -137,5 +137,5 @@ luckily and thank God all these errors are resolved simply by registering these 
 * [Embebed manifest into exe (vb6)](https://stackoverflow.com/questions/2182815/embedding-an-application-manifest-into-a-vb6-exe)
 * [vb6 icons free](https://www.vbcorner.net/download_icons.htm)
 * [Permission Windows](https://learn.microsoft.com/en-us/previous-versions/bb756929(v=msdn.10)?)
-* [VB6 Common Controls](https://www.vbforums.com/showthread.php?698563-CommonControls-(Replacement-of-the-MS-common-controls)
+* [VB6 Common Controls](https://www.vbforums.com/showthread.php?698563-CommonControls-(Replacement-of-the-MS-common-controls))
 * [emule hyperlink on VB6](https://classicvb.net/samples/HyperLabel/)
