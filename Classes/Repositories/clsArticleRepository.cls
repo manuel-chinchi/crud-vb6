@@ -42,7 +42,7 @@ On Error GoTo Catch
     Dim oDict As Dictionary
     If Not cItems Is Nothing Then
         For Each oDict In cItems
-            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_category_of_article.sql")
+            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_category_by_id.sql")
             mConnection.AddWithValue "@CategoryId", oDict("CategoryId")
             mConnection.ExecuteNonQuery
             
@@ -50,17 +50,19 @@ On Error GoTo Catch
             Set cItems2 = mConnection.Items
             
             Dim oDict2 As Dictionary
-            For Each oDict2 In cItems2
-                Dim oCategory As clsCategory
-                Set oCategory = modCategoryHelper.Create( _
-                    oDict2("Id"), _
-                    oDict2("Name"), _
-                    oDict2("State"), _
-                    oDict2("CreateAt"), _
-                    oDict2("UpdateAt"), _
-                    Nothing _
-                )
-            Next oDict2
+            If Not cItems2 Is Nothing Then
+                For Each oDict2 In cItems2 ' ERROR
+                    Dim oCategory As clsCategory
+                    Set oCategory = modCategoryHelper.Create( _
+                        oDict2("Id"), _
+                        oDict2("Name"), _
+                        oDict2("State"), _
+                        oDict2("CreateAt"), _
+                        oDict2("UpdateAt"), _
+                        Nothing _
+                    )
+                Next oDict2
+            End If
             
             Dim oArticle As New clsArticle
             Set oArticle = modArticleHelper.Create( _
@@ -131,7 +133,7 @@ On Error GoTo Catch
     
     If Not cItems Is Nothing Then
         For Each oDict In cItems
-            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_category_of_article.sql")
+            mConnection.Query = modIOHelper.GetStringFromFile(App.Path & "\Scripts\SQL\sp_get_category_by_id.sql")
             mConnection.AddWithValue "@CategoryId", oDict("CategoryId")
             mConnection.ExecuteNonQuery
             

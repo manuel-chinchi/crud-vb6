@@ -301,7 +301,11 @@ Private Sub LoadArticles(arr As Collection)
             li.SubItems(1) = oArticle.mId
             li.SubItems(2) = oArticle.mName
             li.SubItems(3) = oArticle.mDetails
-            li.SubItems(4) = oArticle.mCategory.mName
+            If Not oArticle.mCategory Is Nothing Then
+                li.SubItems(4) = oArticle.mCategory.mName
+            Else
+                li.SubItems(4) = "NO_VALUE"
+            End If
         Next
     End If
 End Sub
