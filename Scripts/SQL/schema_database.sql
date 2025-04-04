@@ -14,5 +14,7 @@ CREATE TABLE Articles (
 	CreateAt TEXT,
 	UpdateAt TEXT,
 	CategoryId INTEGER,
-	FOREIGN KEY (CategoryId) REFERENCES Categories(Id) ON DELETE RESTRICT
+	FOREIGN KEY (CategoryId) REFERENCES Categories(Id) 
+	ON DELETE RESTRICT -- prevent incorrect delete 
+	ON UPDATE CASCADE -- prevent incorrect create/update
 )

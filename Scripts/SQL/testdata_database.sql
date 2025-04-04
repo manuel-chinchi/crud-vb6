@@ -9,7 +9,7 @@ INSERT INTO Categories
 			('Calzado', 1, datetime('now'), NULL)
 
 INSERT INTO Articles
-			(Name, Details, CreateAt, UpdateAt, IdCategory)
+			(Name, Details, CreateAt, UpdateAt, CategoryId)
 	VALUES
 			('Buzo t/canguro', '5xU', datetime('now'), NULL, 2),
 			('Jean elastizado', '10xU', datetime('now'), NULL, 2),
